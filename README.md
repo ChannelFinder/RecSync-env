@@ -1,4 +1,4 @@
-recsync-env
+RecCeiver-env
 ===
 Configuration Environment for recsync server at https://github.com/ChannelFinder/recsync/tree/master/server
 
