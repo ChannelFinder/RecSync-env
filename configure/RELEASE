@@ -1,0 +1,16 @@
+
+## Where the Source repository SRC_URL/SRC_NAME
+##
+SRC_URL:=https://github.com/ChannelFinder
+SRC_NAME:=recsync
+
+
+## Which the source tag / branch / hash id would like to use
+SRC_TAG:=8c73e3d
+
+## Placeholder for the site-specific version control 
+SRC_VERSION:=8c73e3d
+
+
+-include $(TOP)/../RELEASE.local
+-include $(TOP)/configure/RELEASE.local

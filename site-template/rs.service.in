@@ -1,0 +1,25 @@
+[Unit]
+Description=RecsyncServer Service
+Documentation=https://github.com/ChannelFinder/recsync/tree/master/server
+After=network.target channelfinder.service
+Requires=channelfinder.service
+
+[Service]
+# User=recceiver
+# Group=nogroup
+
+ExecStart=/usr/bin/twistd \
+    --nodaemon \
+    --pidfile= \
+    web --listen tcp:8080 --path .
+
+
+ExecReload=kill -SIGINT $MAINPID
+KillMode=process
+
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
+Alias=cf.service

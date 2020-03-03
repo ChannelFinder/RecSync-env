@@ -1,0 +1,17 @@
+
+### channelfinder installation location
+INSTALL_LOCATION=/opt/recsync/server
+
+
+### One may not need to change the following variables
+### SRC_GITURL used for git clone
+SRC_GITURL:=$(SRC_URL)/$(SRC_NAME)
+### SRC_PATH used for a local directory which is a clone git repository
+SRC_PATH:=$(SRC_NAME)-src
+
+
+# These allow developers to override the CONFIG_SITE variable
+# settings without having to modify the configure/CONFIG_SITE
+# file itself.
+-include $(TOP)/../CONFIG_SITE.local
+-include $(TOP)/configure/CONFIG_SITE.local
