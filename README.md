@@ -1,6 +1,6 @@
-recsync-env
+RecCeiver-env
 ===
-Configuration Environment for recsync server at https://github.com/ChannelFinder/recsync/tree/master/server
+Configuration Environment for recsync server (aka. RecCeiver) at https://github.com/ChannelFinder/recsync/tree/master/server
 
 ## Role
 In order to download, install, setup all relevant components, one should do many steps manually. This repository was designed for the easy-to-reproducible environment for recsyn server.
