@@ -15,7 +15,7 @@ In order to download, install, setup all relevant components, one should do many
 * Debian 10
 
 ```
-apt install sqlite3 python-twisted 
+sudo apt install sqlite3 python-twisted python-requests python-simplejson python-urllib3
 ```
 
 
