@@ -1,7 +1,7 @@
 #
 .DEFAULT_GOAL := help
 
-.PHONY: help default init distclean deinit
+.PHONY: help default init distclean deinit init1 init2 distclean1 distclean2
 
 # # help is defined in 
 # # https://gist.github.com/rcmachado/af3db315e31383502660
@@ -26,33 +26,44 @@ default: help
 
 
 ## Clone Source
-init:
-ifeq "$(INIT_SRC)" "1"
-	git clone $(SRC_GITURL) $(SRC_PATH)
-	cd $(SRC_PATH) && git checkout $(SRC_TAG)
+init: init1 init2
+
+
+init1:
+ifeq "$(INIT_SRC1)" "1"
+	git clone $(SRC1_GITURL) $(SRC1_PATH)
+	cd $(SRC1_PATH) && git checkout $(SRC1_TAG)
 else
-	$(QUIET)echo "$(SRC_PATH) exists. make distclean first, if one would like to restart it."
+	$(QUIET)echo "$(SRC1_PATH) exists. make distclean first, if one would like to restart it."
+endif
+
+init2:
+ifeq "$(INIT_SRC2)" "1"
+	git clone $(SRC2_GITURL) $(SRC2_PATH)
+	cd $(SRC2_PATH) && git checkout $(SRC2_TAG)
+else
+	$(QUIET)echo "$(SRC2_PATH) exists. make distclean first, if one would like to restart it."
 endif
 
 deinit: distclean
 ## Clean Source
-distclean:
-ifneq ($(wildcard $(SRC_PATH)/.*),)
-	$(QUIET)echo "We've found $(SRC_PATH)"
+distclean: distclean1 distclean2
+
+distclean1:
+ifneq ($(wildcard $(SRC1_PATH)/.*),)
+	$(QUIET)echo "We've found $(SRC1_PATH)"
 	$(QUIET)echo "Removing ....."
-	$(QUIET)rm -rf $(SRC_PATH)
+	$(QUIET)rm -rf $(SRC1_PATH)
 else
-	$(QUIET)echo "There is no $(SRC_PATH)."
+	$(QUIET)echo "There is no $(SRC1_PATH)."
 endif
 
+distclean2:
+ifneq ($(wildcard $(SRC2_PATH)/.*),)
+	$(QUIET)echo "We've found $(SRC2_PATH)"
+	$(QUIET)echo "Removing ....."
+	$(QUIET)rm -rf $(SRC2_PATH)
+else
+	$(QUIET)echo "There is no $(SRC2_PATH)."
+endif
 
-.PHONY: build conf
-
-## Build Source
-build: 
-#	$(QUIET)mvn -f $(SRC_PATH)/pom.xml clean install
-
-## Copy the site specific files into sources
-conf:
-#	$(QUIET)sed -e "s:_KEYSTORE_:$(KEYSTORE_FILENAME):g" -e "s:_CFLDIF_:$(CFLDIF_FILENAME):g" < $(SITE_TEMPLATE_PATH)/application.properties.in > $(SITE_TEMPLATE_PATH)/application.properties
-#	$(QUIET)cp $(SITE_TEMPLATE_PATH)/application.properties $(SITE_SPECIFIC_FILES_PATH)/

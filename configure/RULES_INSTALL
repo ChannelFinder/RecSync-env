@@ -2,7 +2,7 @@
 .PHONY: sd_config sd_install sd_status sd_stop sd_clean sd_enable
 
 sd_config:
-	$(QUIET)sed -e "s:_JAVAPATH_:$(JAVA_PATH):g" -e "s:_JAVAOPTS_:$(JAVA_OPTS):g" -e "s:_CFPATH_:$(INSTALL_LOCATION):g" -e "s:_CHANNELFINDER_JAR_NAME_:$(CFJAR_FILENAME):g" < $(SITE_TEMPLATE_PATH)/rs.service.in > $(SITE_TEMPLATE_PATH)/$(SYSTEMD_FILENAME)
+	$(QUIET)sed -e "s:_PYTHONPATH_:$(INSTALL_LOCATION):g" -e "s:_TWISDPATH_:$(TWISD_PATH):g" -e "s:_CONFIGFILE_:$(CFG_FILENAME):g" -e "s:_USER_:$(USERID):g"  -e "s:_GROUP_:$(GROUPID):g"  < $(SITE_TEMPLATE_PATH)/rs.service.in > $(SITE_TEMPLATE_PATH)/$(SYSTEMD_FILENAME)
 
 	
 sd_install: sd_config
@@ -29,34 +29,35 @@ sd_enable:
 	$(QUIET)$(SUDO) systemctl enable $(SYSTEMD_FILENAME)
 
 
-.PHONY: cf_status cf_start cf_stop cf_restart cf_install install uninstall
+.PHONY:  src_install install uninstall
 
-cf_status: sd_status
+src_install: src_preinst
+	$(QUIET)$(SUDO) install --owner=$(USERID) --group=$(GROUPID) -d $(INSTALL_LOCATION)
+	$(QUIET)$(SUDO) cp -r $(SRC1_PATH)/server/recceiver/ $(INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) cp -r $(SRC1_PATH)/server/twisted/ $(INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) cp -r $(SRC2_PATH)/channelfinder/ $(INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) install -b -m 644 --owner=$(USERID) --group=$(GROUPID) $(SITE_TEMPLATE_PATH)/recsync.conf $(INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) install -b -m 644 --owner=$(USERID) --group=$(GROUPID) $(SITE_TEMPLATE_PATH)/channelfinderapi.conf $(INSTALL_LOCATION)/
+	$(QUIET)$(SUDO)	chown -R $(USERID):$(GROUPID) $(INSTALL_LOCATION)
 
-cf_start: sd_start
+src_preinst:
+	$(SUDO) sh $(SRC1_PATH)/debian/recceiver.postinst "configure"
 
-cf_stop: sd_stop
-
-cf_restart: sd_restart
-
-
-src_install: 
-	$(QUIET)$(SUDO) install -d $(INSTALL_LOCATION)
-	$(QUIET)$(SUDO) install -m 744 $(SRC_PATH)/target/$(CFJAR_FILENAME)  $(INSTALL_LOCATION)/
-
-
+src_postrm:
+	$(QUIET)$(SUDO) sh $(SRC1_PATH)/debian/recceiver.postrm "purge"
+	
 ## Install Service related files 
-install: cf_install sd_install sd_enable
+install: src_install sd_install sd_enable
 	$(QUIET)echo "----- Note that one should start it and check its status via "
 	$(QUIET)echo "----- systemctl start  $(SYSTEMD_FILENAME)"
 	$(QUIET)echo "----- systemctl status $(SYSTEMD_FILENAME)"
 
 
 ## Uninstall ChannelFinder
-uninstall: sd_stop sd_clean
+uninstall: src_postrm sd_stop sd_clean
 	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION)
 
 
-reinstall: conf build install
+reinstall: install
 
-restart: uninstall reinstall cf_start cf_status
+restart: uninstall reinstall sd_start sd_status sd_start

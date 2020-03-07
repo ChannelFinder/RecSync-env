@@ -1,18 +1,30 @@
 [Unit]
-Description=RecsyncServer Service
+Description=RecSync Service
 Documentation=https://github.com/ChannelFinder/recsync/tree/master/server
+Documentation=https://github.com/ChannelFinder/pyCFClient
 After=network.target channelfinder.service
 Requires=channelfinder.service
 
 [Service]
-# User=recceiver
-# Group=nogroup
 
-ExecStart=/usr/bin/twistd \
-    --nodaemon \
-    --pidfile= \
-    web --listen tcp:8080 --path .
+#
+# We don't need to set uid/gid in twistd arguments, because systemd will take care of them
+#
+User=recceiver
+Group=nogroup
 
+# Everything in a local, so we have to tell where PYTHONPATH is
+Environment="PYTHONPATH=_PYTHONPATH_"
+
+# Log file cannot be in /var/log due to User/Group
+# PID file cannot be generated due to permission, and we
+# don't need it, because systemd takes care about it
+# 
+ExecStart=_TWISDPATH_/twistd   --nodaemon \
+			       --logfile=_PYTHONPATH_/recsync.log \
+          		       --rundir _PYTHONPATH_ \
+			       --pidfile= \
+	  		       -r poll -n recceiver -f _PYTHONPATH_/_CONFIGFILE_ 
 
 ExecReload=kill -SIGINT $MAINPID
 KillMode=process
@@ -22,4 +34,4 @@ RestartSec=10s
 
 [Install]
 WantedBy=multi-user.target
-Alias=cf.service
+Alias=rs.service

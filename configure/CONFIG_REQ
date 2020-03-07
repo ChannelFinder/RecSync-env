@@ -1,5 +1,0 @@
-
-
-LINUX_DIST:="(lsb_release -ds || cat /etc/*release || uname -om) | head -n1"
-
-aa:=$(shell $(LINUX_DIST))
