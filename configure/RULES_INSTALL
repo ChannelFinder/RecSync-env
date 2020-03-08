@@ -34,14 +34,18 @@ sd_enable:
 src_install: src_preinst
 	$(QUIET)$(SUDO) install --owner=$(USERID) --group=$(GROUPID) -d $(INSTALL_LOCATION)
 	$(QUIET)$(SUDO) cp -r $(SRC1_PATH)/server/recceiver/ $(INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) cp -r $(SRC1_PATH)/server/twisted/ $(INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) cp -r $(SRC2_PATH)/channelfinder/ $(INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) install -b -m 644 --owner=$(USERID) --group=$(GROUPID) $(SITE_TEMPLATE_PATH)/recsync.conf $(INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) install -b -m 644 --owner=$(USERID) --group=$(GROUPID) $(SITE_TEMPLATE_PATH)/channelfinderapi.conf $(INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) cp -r $(SRC1_PATH)/server/twisted/   $(INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) cp -r $(SRC2_PATH)/channelfinder/    $(INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/recsync.conf          (INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/channelfinderapi.conf $(INSTALL_LOCATION)/
 	$(QUIET)$(SUDO)	chown -R $(USERID):$(GROUPID) $(INSTALL_LOCATION)
 
+# sed with recsync.conf.in currently does nothing, will add more variables later
+# Sunday, March  8 01:04:52 PST 2020
 src_preinst:
-	$(SUDO) sh $(SRC1_PATH)/debian/recceiver.postinst "configure"
+	$(QUIET)$(SUDO) sh $(SRC1_PATH)/debian/recceiver.postinst "configure"
+	$(QUIET)sed -e "s:_PYTHONPATH_:$(INSTALL_LOCATION):g"  < $(SITE_TEMPLATE_PATH)/recsync.conf.in > $(SITE_TEMPLATE_PATH)/recsync.conf
+
 
 src_postrm:
 	$(QUIET)$(SUDO) sh $(SRC1_PATH)/debian/recceiver.postrm "purge"
