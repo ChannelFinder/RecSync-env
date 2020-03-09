@@ -1,6 +1,7 @@
 #
 .DEFAULT_GOAL := help
-
+#
+#
 .PHONY: help default init distclean deinit init1 init2 distclean1 distclean2
 
 # # help is defined in 
@@ -21,13 +22,14 @@ help:
 	{ helpMsg = $$0 }'                              \
 	$(MAKEFILE_LIST) | column -ts:
 
-
+#
+#
 default: help
-
-
-## Clone Source
+#
+## Clone sources : recsync and pyCFClient
 init: init1 init2
-
+#
+#
 # recsync
 init1:
 ifeq "$(INIT_SRC1)" "1"
@@ -36,7 +38,8 @@ ifeq "$(INIT_SRC1)" "1"
 else
 	$(QUIET)echo "$(SRC1_PATH) exists. make distclean first, if one would like to restart it."
 endif
-
+#
+#
 # pyCFClient
 init2:
 ifeq "$(INIT_SRC2)" "1"
@@ -45,11 +48,15 @@ ifeq "$(INIT_SRC2)" "1"
 else
 	$(QUIET)echo "$(SRC2_PATH) exists. make distclean first, if one would like to restart it."
 endif
-
+#
+#
 deinit: distclean
-## Clean Source
+#
+#
+## Clean sources : recsync and pyCFClient
 distclean: distclean1 distclean2
-
+#
+#
 distclean1:
 ifneq ($(wildcard $(SRC1_PATH)/.*),)
 	$(QUIET)echo "We've found $(SRC1_PATH)"
@@ -58,7 +65,8 @@ ifneq ($(wildcard $(SRC1_PATH)/.*),)
 else
 	$(QUIET)echo "There is no $(SRC1_PATH)."
 endif
-
+#
+#
 distclean2:
 ifneq ($(wildcard $(SRC2_PATH)/.*),)
 	$(QUIET)echo "We've found $(SRC2_PATH)"
@@ -67,4 +75,6 @@ ifneq ($(wildcard $(SRC2_PATH)/.*),)
 else
 	$(QUIET)echo "There is no $(SRC2_PATH)."
 endif
+#
+#
 

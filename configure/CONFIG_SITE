@@ -1,24 +1,28 @@
-
+#
+#
 ### channelfinder installation location
 INSTALL_LOCATION=/opt/RecSync
-
-
+#
+#
 CFG_FILENAME:=recsync.conf
-
+#
+#
 ### One may not need to change the following variables
 ### SRC_GITURL used for git clone
 SRC1_GITURL:=$(SRC1_URL)/$(SRC1_NAME)
 ### SRC_PATH used for a local directory which is a clone git repository
 SRC1_PATH:=$(SRC1_NAME)-src
-
+#
+#
 SRC2_GITURL:=$(SRC2_URL)/$(SRC2_NAME)
 ### SRC_PATH used for a local directory which is a clone git repository
 SRC2_PATH:=$(SRC2_NAME)-src
-
+#
+#
 ### Default TWISD path and its options
 TWISD_PATH:=/usr/bin
-
-
+#
+#
 ### Use the same user and group which were defined in a debian folder
 ### Please keep them as they are. If one would like to change them,
 ### please consult recsync/debian/{recceiver.postinst,recceiver.postrm} files
@@ -26,7 +30,8 @@ TWISD_PATH:=/usr/bin
 ### configure/RULES_INSTALL
 USERID:=recceiver
 GROUPID:=nogroup
-
+#
+#
 # These allow developers to override the CONFIG_SITE variable
 # settings without having to modify the configure/CONFIG_SITE
 # file itself.
