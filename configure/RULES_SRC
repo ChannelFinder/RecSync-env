@@ -28,7 +28,7 @@ default: help
 ## Clone Source
 init: init1 init2
 
-
+# recsync
 init1:
 ifeq "$(INIT_SRC1)" "1"
 	git clone $(SRC1_GITURL) $(SRC1_PATH)
@@ -37,6 +37,7 @@ else
 	$(QUIET)echo "$(SRC1_PATH) exists. make distclean first, if one would like to restart it."
 endif
 
+# pyCFClient
 init2:
 ifeq "$(INIT_SRC2)" "1"
 	git clone $(SRC2_GITURL) $(SRC2_PATH)

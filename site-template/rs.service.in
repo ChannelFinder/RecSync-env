@@ -8,17 +8,19 @@ Requires=channelfinder.service
 [Service]
 
 #
-# We don't need to set uid/gid in twistd arguments, because systemd will take care of them
+# Twistd also has the options, but we use the systemd one instead.
 #
-User=recceiver
-Group=nogroup
+User=_USERID_
+Group=_GROUPID_
 
 # Everything in a local, so we have to tell where PYTHONPATH is
 Environment="PYTHONPATH=_PYTHONPATH_"
 
-# Log file cannot be in /var/log due to User/Group
-# PID file cannot be generated due to permission, and we
-# don't need it, because systemd takes care about it
+# Due to User/Group permission, we cannot generate the recsync.log
+# in /var/log/ folder. So we put in into the recsync installation
+# location instead. In the same way, a PID file also cannot be
+# generated. However, we don't need it, since systemd service will
+# take care of this. 
 # 
 ExecStart=_TWISDPATH_/twistd   --nodaemon \
 			       --logfile=_PYTHONPATH_/recsync.log \

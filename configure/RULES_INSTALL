@@ -36,7 +36,7 @@ src_install: src_preinst
 	$(QUIET)$(SUDO) cp -r $(SRC1_PATH)/server/recceiver/ $(INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) cp -r $(SRC1_PATH)/server/twisted/   $(INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) cp -r $(SRC2_PATH)/channelfinder/    $(INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/recsync.conf          (INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/recsync.conf          $(INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/channelfinderapi.conf $(INSTALL_LOCATION)/
 	$(QUIET)$(SUDO)	chown -R $(USERID):$(GROUPID) $(INSTALL_LOCATION)
 
