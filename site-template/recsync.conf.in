@@ -4,7 +4,7 @@
 # default
 #addrlist = 255.255.255.255:5049
 # for local testing w/ firewall
-#addrlist = 127.255.255.255:5049
+addrlist = 127.255.255.255:5049
 
 # Listen for TCP connections on this interface and port.
 # Port also used as source for UDP broadcasts.
@@ -15,14 +15,14 @@
 procs = cf
 
 # Time interval for sending recceiver advertisments
-#announceInterval = 15.0
+announceInterval = 15.0
 
 # Idle Timeout for TCP connections.
-#tcptimeout = 15.0
+tcptimeout = 15.0
 
 # Time to wait before commiting updates
 # Doesn't effect IOC clients
-#commitInterval = 5.0
+commitInterval = 5.0
 
 # Maximum concurrent "active" clients
 # to allow.
