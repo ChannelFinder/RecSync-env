@@ -4,7 +4,7 @@
 #
 #
 sd_config:
-	$(QUIET)sed -e "s:_PYTHONPATH_:$(INSTALL_LOCATION):g" -e "s:_TWISDPATH_:$(TWISD_PATH):g" -e "s:_CONFIGFILE_:$(CFG_FILENAME):g" -e "s:_USER_:$(USERID):g"  -e "s:_GROUP_:$(GROUPID):g"  < $(SITE_TEMPLATE_PATH)/rs.service.in > $(SITE_TEMPLATE_PATH)/$(SYSTEMD_FILENAME)
+	$(QUIET)sed -e "s:_PYTHONPATH_:$(INSTALL_LOCATION):g" -e "s:_TWISDPATH_:$(TWISD_PATH):g" -e "s:_CONFIGFILE_:$(CFG_FILENAME):g" -e "s:_USERID_:$(USERID):g"  -e "s:_GROUPID_:$(GROUPID):g"  < $(SITE_TEMPLATE_PATH)/rs.service.in > $(SITE_TEMPLATE_PATH)/$(SYSTEMD_FILENAME)
 #
 #	
 sd_install: sd_config
@@ -46,11 +46,13 @@ src_install: src_preinst
 	$(QUIET)$(SUDO) cp -r $(SRC2_PATH)/channelfinder/    $(INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/recsync.conf          $(INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/channelfinderapi.conf $(INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/dropin.cache          $(INSTALL_LOCATION)/twisted/plugins/
 	$(QUIET)$(SUDO)	chown -R $(USERID):$(GROUPID) $(INSTALL_LOCATION)
 
 # sed with recsync.conf.in currently does nothing, will add more variables later
 # Sunday, March  8 01:04:52 PST 2020
 src_preinst:
+	$(QUIET)echo "adduser recceiver into a system"
 	$(QUIET)$(SUDO) sh $(SRC1_PATH)/debian/recceiver.postinst "configure"
 	$(QUIET)sed -e "s:_PYTHONPATH_:$(INSTALL_LOCATION):g"  < $(SITE_TEMPLATE_PATH)/recsync.conf.in > $(SITE_TEMPLATE_PATH)/recsync.conf
 
