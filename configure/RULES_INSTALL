@@ -8,7 +8,7 @@ sd_config:
 #
 #	
 sd_install: sd_config
-	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/$(SYSTEMD_FILENAME) $(SYSTEMD_PATH)/
+	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/$(SYSTEMD_FILENAME) $(SYSTEMD_PATH)/
 	$(QUIET)$(SUDO) systemctl daemon-reload
 #
 #	
@@ -19,18 +19,18 @@ sd_status:
 sd_start:
 	$(QUIET)$(SUDO) systemctl start $(SYSTEMD_FILENAME)
 #
-#
+# We ignore its error
 sd_stop:
-	$(QUIET)$(SUDO) systemctl stop $(SYSTEMD_FILENAME)
+	-$(QUIET)$(SUDO) systemctl stop $(SYSTEMD_FILENAME)
 #
 #
 sd_restart:
 	$(QUIET)$(SUDO) systemctl restart $(SYSTEMD_FILENAME)
 #
-#
+# We ignore its error
 sd_clean:
-	$(QUIET)$(SUDO) systemctl disable $(SYSTEMD_FILENAME)
-	$(QUIET)$(SUDO) rm -f $(SYSTEMD_PATH)/$(SYSTEMD_FILENAME)
+	-$(QUIET)$(SUDO) systemctl disable $(SYSTEMD_FILENAME)
+	-$(QUIET)$(SUDO) rm -f $(SYSTEMD_PATH)/$(SYSTEMD_FILENAME)
 #
 #
 sd_enable:
@@ -40,19 +40,19 @@ sd_enable:
 .PHONY:  src_install src_preinst src_postrm install uninstall restart
 
 src_install: src_preinst
-	$(QUIET)$(SUDO) install --owner=$(USERID) --group=$(GROUPID) -d $(INSTALL_LOCATION)
+	$(QUIET)$(SUDO) $(INSTALL) --owner=$(USERID) --group=$(GROUPID) -d $(INSTALL_LOCATION)
 	$(QUIET)$(SUDO) cp -r $(SRC1_PATH)/server/recceiver/ $(INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) cp -r $(SRC1_PATH)/server/twisted/   $(INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) cp -r $(SRC2_PATH)/channelfinder/    $(INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/recsync.conf          $(INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/channelfinderapi.conf $(INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) install -b -m 644 $(SITE_TEMPLATE_PATH)/dropin.cache          $(INSTALL_LOCATION)/twisted/plugins/
+	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/recsync.conf          $(INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/channelfinderapi.conf $(INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/dropin.cache          $(INSTALL_LOCATION)/twisted/plugins/
 	$(QUIET)$(SUDO)	chown -R $(USERID):$(GROUPID) $(INSTALL_LOCATION)
 
 # sed with recsync.conf.in currently does nothing, will add more variables later
 # Sunday, March  8 01:04:52 PST 2020
 src_preinst:
-	$(QUIET)echo "adduser recceiver into a system"
+	$(QUIET)echo "adding user $(USERID)"
 	$(QUIET)$(SUDO) sh $(SRC1_PATH)/debian/recceiver.postinst "configure"
 	$(QUIET)sed -e "s:_PYTHONPATH_:$(INSTALL_LOCATION):g"  < $(SITE_TEMPLATE_PATH)/recsync.conf.in > $(SITE_TEMPLATE_PATH)/recsync.conf
 
@@ -68,7 +68,7 @@ install: src_install sd_install sd_enable
 
 
 ## Uninstall RecSync : remove user/group, stop, clean service, remove all
-uninstall: src_postrm sd_stop sd_clean
+uninstall: sd_stop sd_clean src_postrm
 	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION)
 
 

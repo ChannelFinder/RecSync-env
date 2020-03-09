@@ -5,7 +5,8 @@ INSTALL_LOCATION=/opt/RecSync
 #
 #
 CFG_FILENAME:=recsync.conf
-#
+
+CF_CFG_PATH=
 #
 ### One may not need to change the following variables
 ### SRC_GITURL used for git clone

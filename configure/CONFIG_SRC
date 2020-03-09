@@ -1,5 +1,8 @@
 #
 #
+INSTALL:= install
+NSTALL_PROGRAM:=$(INSTALL)
+INSTALL_DATA:=$(INSTALL) -m 644
 SUDO := sudo
 #
 #
