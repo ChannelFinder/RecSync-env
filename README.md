@@ -23,6 +23,9 @@ sudo apt install sqlite3 python-twisted python-requests python-simplejson python
 ```
 
 * CentOS 7
+```
+sudo yum install sqlite  python-twisted-web python-requests python2-simplejson python-urllib3
+```
  
 * CentOS 8
 
@@ -40,8 +43,8 @@ sudo apt install sqlite3 python-twisted python-requests python-simplejson python
 
 ### `make install`
 * `sudo` permission is required.
-* Add a user `recceiver` and a group `nogroup` into a host system
-* Copy all files in `recsync/server` and `phCFClient` into defined a local installation path `INSTALL_LOCATION` in `configure/RELEASE`
+* Add a user `recceiver` and a group id `65534` into a host system. Note that `nogroup` is valid only for Debian.
+* Copy all files in `recsync/server` and `pyCFClient` into defined a local installation path `INSTALL_LOCATION` in `configure/RELEASE`
 * Setup and enable systemd service
 
 ### `make distclean`

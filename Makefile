@@ -17,9 +17,13 @@
 # 
 # Author  : Jeong Han Lee
 # email   : JeongLee@lbl.gov
-# Date    : Thursday, February 20 11:30:23 PST 2020
-# version : 0.0.1
+# Date    : Friday, May  1 14:41:59 PDT 2020
+# version : 0.0.2
 
 TOP:=$(CURDIR)
+ifneq (1,$(words $(TOP)))
+TOP:=.
+endif
+
 include $(TOP)/configure/CONFIG
 include $(TOP)/configure/RULES

@@ -49,16 +49,12 @@ src_install: src_preinst
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/dropin.cache          $(INSTALL_LOCATION)/twisted/plugins/
 	$(QUIET)$(SUDO)	chown -R $(USERID):$(GROUPID) $(INSTALL_LOCATION)
 
-# sed with recsync.conf.in currently does nothing, will add more variables later
-# Sunday, March  8 01:04:52 PST 2020
 src_preinst:
-	$(QUIET)echo "adding user $(USERID)"
-	$(QUIET)$(SUDO) sh $(SRC1_PATH)/debian/recceiver.postinst "configure"
+	$(QUIET)$(SUDO) bash $(SITE_TEMPLATE_PATH)/recceiver.postinst "configure" "$(USERID)" "$(GROUPID)"
 	$(QUIET)sed -e "s:_PYTHONPATH_:$(INSTALL_LOCATION):g"  < $(SITE_TEMPLATE_PATH)/recsync.conf.in > $(SITE_TEMPLATE_PATH)/recsync.conf
 
-
 src_postrm:
-	$(QUIET)$(SUDO) sh $(SRC1_PATH)/debian/recceiver.postrm "purge"
+	$(QUIET)$(SUDO) bash  $(SITE_TEMPLATE_PATH)/recceiver.postrm "purge" "$(USERID)"
 	
 ## Install recsync : add user/group, install all, setup and enable service
 install: src_install sd_install sd_enable
