@@ -39,6 +39,21 @@ $ sudo update-alternatives --set python /usr/bin/python3
 $ sudo dnf install sqlite python3-twisted python-requests-futures python3-simplejson python3-urllib3
 ```
 
+### Python 
+
+* Debian 10
+```
+Python 2.7.16 (default, Oct 10 2019, 22:02:15) 
+[GCC 8.3.0] on linux2
+```
+
+* Fedora 31
+```
+$ python
+Python 3.8.2 (default, Feb 28 2020, 00:00:00) 
+[GCC 10.0.1 20200216 (Red Hat 10.0.1-0.8)] on linux
+```
+
 ## Few Makefile Rules
 
 ### `make`
