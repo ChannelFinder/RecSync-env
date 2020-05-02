@@ -19,15 +19,20 @@ In order to download, install, setup all relevant components, one should do many
 * Debian 10
 
 ```
-sudo apt install sqlite3 python-twisted python-requests python-simplejson python-urllib3
+$ sudo apt install sqlite3 python-twisted python-requests python-simplejson python-urllib3
 ```
 
 * CentOS 7
 ```
-sudo yum install sqlite  python-twisted-web python-requests python2-simplejson python-urllib3
+$ sudo yum install sqlite  python-twisted-web python-requests python2-simplejson python-urllib3
 ```
  
 * CentOS 8
+
+```
+$ sudo dnf install sqlite python3-twisted python-requests-futures python3-simplejson python3-urllib3
+$ sudo update-alternatives --set python /usr/bin/python3
+```
 
 * Fedora 31
 
