@@ -35,7 +35,9 @@ $ sudo update-alternatives --set python /usr/bin/python3
 ```
 
 * Fedora 31
-
+```
+$ sudo dnf install sqlite python3-twisted python-requests-futures python3-simplejson python3-urllib3
+```
 
 ## Few Makefile Rules
 
