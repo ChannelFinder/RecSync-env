@@ -4,3 +4,4 @@
 .\#*
 recsync.service
 recsync.conf
+*.list

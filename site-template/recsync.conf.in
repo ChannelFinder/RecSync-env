@@ -33,4 +33,4 @@ commitInterval = 5.0
 
 [cf]
 # a space-separated list of infotags to set as CF Properties
-#infotags = archive foo bar blah
+infotags = @CF_PROPERTIES@
