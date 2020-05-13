@@ -1,18 +1,18 @@
 [recceiver]
 
 # Logging detail level.  Use python logging level name.
-#loglevel = WARN
+loglevel = WARN
 
 # list of broadcast addresses.
 # default
 #addrlist = 255.255.255.255:5049
 # for local testing w/ firewall
-addrlist = 127.255.255.255:5049
+#addrlist = 127.255.255.255:5049
 
 # Listen for TCP connections on this interface and port.
 # Port also used as source for UDP broadcasts.
 # Default uses wildcard address and a random port.
-#bind = 0.0.0.0:0
+bind = 0.0.0.0:45722
 
 # Processing chain
 procs = cf
@@ -32,12 +32,11 @@ procs = cf
 #maxActive = 20
 
 # The channelFinder client is configuration information is 
-# stored in /etc/channelfinderapi.conf as described in the client
+# stored in channelfinderapi.conf as described in the client
 
 [cf]
 # a space-separated list of infotags to set as CF Properties
-infotags = elemName elemType elemField devName handle area sector @CF_PROPERTIES@
+infotags = @CF_PROPERTIES@
 alias = on
-# Debug output file location.
-# Produces no file when not defined.
-# debug_file_loc = /home/devuser/recsyncdata.txt
+
+# EOF

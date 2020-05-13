@@ -44,14 +44,16 @@ src_install: src_preinst
 	$(QUIET)$(SUDO) cp -r $(SRC1_PATH)/server/recceiver/ $(INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) cp -r $(SRC1_PATH)/server/twisted/   $(INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) cp -r $(SRC2_PATH)/channelfinder/    $(INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/$(CFG_FILE)             $(INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/channelfinderapi.conf   $(INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/dropin.cache            $(INSTALL_LOCATION)/twisted/plugins/
+	$(QUIET)$(SUDO) $(INSTALL) -m 400 -b $(SITE_TEMPLATE_PATH)/$(CFG_FILE)             $(INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) $(INSTALL) -m 400 -b $(SITE_TEMPLATE_PATH)/channelfinderapi.conf   $(INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/dropin.cache              $(INSTALL_LOCATION)/twisted/plugins/
 	$(QUIET)$(SUDO)	chown -R $(USERID):$(GROUPID) $(INSTALL_LOCATION)
 
 src_preinst:
 	$(QUIET)$(SUDO) bash $(SITE_TEMPLATE_PATH)/recceiver.postinst "configure" "$(USERID)" "$(GROUPID)"
 	$(QUIET)sed -e "s:@CF_PROPERTIES@:$(CF_PROPERTIES):g"  < $(SITE_TEMPLATE_PATH)/$(CFG_FILE_IN) > $(SITE_TEMPLATE_PATH)/$(CFG_FILE)
+	$(QUIET)sed -e "s|@CF_URL@|$(CF_URL)|g" -e "s:@CF_USER@:$(CF_USER):g" -e "s:@CF_PASSWD@:$(CF_PASSWD):g"  < $(SITE_TEMPLATE_PATH)/channelfinderapi.conf.in > $(SITE_TEMPLATE_PATH)/channelfinderapi.conf
+	
 
 src_postrm:
 	$(QUIET)$(SUDO) bash  $(SITE_TEMPLATE_PATH)/recceiver.postrm "purge" "$(USERID)"

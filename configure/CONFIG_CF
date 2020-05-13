@@ -1,0 +1,17 @@
+
+#
+CF_HOST:=http://localhost
+CF_PORT:=8080
+#
+#
+CF_URL:=$(CF_HOST):$(CF_PORT)/ChannelFinder
+CF_USER:=admin
+CF_PASSWD:=1234
+#
+#
+# These allow developers to override the CONFIG_CF variable
+# settings without having to modify the configure/CONFIG_CF
+# file itself.
+-include $(TOP)/../CONFIG_CF.local
+-include $(TOP)/configure/CONFIG_CF.local
+
