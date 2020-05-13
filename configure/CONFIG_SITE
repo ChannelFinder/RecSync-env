@@ -2,27 +2,15 @@
 #
 ### channelfinder installation location
 INSTALL_LOCATION=/opt/RecSync
+#
 
-#
-### One may not need to change the following variables
-### SRC_GITURL used for git clone
-SRC1_GITURL:=$(SRC1_URL)/$(SRC1_NAME)
-### SRC_PATH used for a local directory which is a clone git repository
-SRC1_PATH:=$(SRC1_NAME)-src
-#
-#
-SRC2_GITURL:=$(SRC2_URL)/$(SRC2_NAME)
-### SRC_PATH used for a local directory which is a clone git repository
-SRC2_PATH:=$(SRC2_NAME)-src
-#
-#
 #
 #
 CFG_FILE:=recsync.conf
 CFG_FILE_IN:=$(CFG_FILE).in
 #
 ### CF Properties for DB info tag
-CF_PROPERTIES:=archive
+CF_PROPERTIES:=archive elemName elemType elemField devName handle area sector
 CF_PROPERTIES+=test
 CF_PROPERTIES+=hello
 #
@@ -44,6 +32,23 @@ USERID:=recceiver
 GROUPID:=65534
 #
 #
+
+### One may not need to change the following variables
+### SRC_GITURL used for git clone
+SRC1_GITURL:=$(SRC1_URL)/$(SRC1_NAME)
+### SRC_PATH used for a local directory which is a clone git repository
+SRC1_PATH:=$(SRC1_NAME)-src
+#
+#
+SRC2_GITURL:=$(SRC2_URL)/$(SRC2_NAME)
+### SRC_PATH used for a local directory which is a clone git repository
+SRC2_PATH:=$(SRC2_NAME)-src
+#
+#
+#
+
+
+
 # These allow developers to override the CONFIG_SITE variable
 # settings without having to modify the configure/CONFIG_SITE
 # file itself.
