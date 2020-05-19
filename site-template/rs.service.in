@@ -22,18 +22,15 @@ Environment="PYTHONPATH=_PYTHONPATH_"
 # generated. However, we don't need it, since systemd service will
 # take care of this. 
 # 
-ExecStart=_TWISDPATH_/twistd   --nodaemon \
-			       --logfile=_PYTHONPATH_/recsync.log \
-          		       --rundir _PYTHONPATH_ \
+ExecStart=_TWISDPATH_/twistd   --logfile=_PYTHONPATH_/recsync.log \
+			       --rundir _PYTHONPATH_ \
 			       --pidfile= \
-	  		       -r poll -n recceiver -f _PYTHONPATH_/_CONFIGFILE_ 
+			       --reactor=poll \
+			       --nodaemon recceiver -f _PYTHONPATH_/_CONFIGFILE_
 
-ExecReload=kill -SIGINT $MAINPID
-KillMode=process
-
-Restart=on-failure
-RestartSec=10s
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
 Alias=rs.service
+#
