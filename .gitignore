@@ -5,3 +5,4 @@
 recsync.service
 *.conf
 *.list
+.versions
