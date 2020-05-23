@@ -4,9 +4,9 @@
 SRC1_URL:=https://github.com/ChannelFinder
 SRC1_NAME:=recsync
 ### Which the source tag / branch / hash id would like to use
-SRC1_TAG:=8c73e3d
+SRC1_TAG:=ae7f476
 ### Placeholder for the site-specific version control 
-SRC1_VERSION:=8c73e3d
+SRC1_VERSION:=$(SRC1_TAG)
 #
 #
 ### Where the Source repository SRC2_URL/SRC2_NAME
