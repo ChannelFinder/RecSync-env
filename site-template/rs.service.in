@@ -3,7 +3,7 @@ Description=RecSync Service
 Documentation=https://github.com/ChannelFinder/recsync/tree/master/server
 Documentation=https://github.com/ChannelFinder/pyCFClient
 After=network.target channelfinder.service
-Requires=channelfinder.service
+Wants=channelfinder.service
 
 [Service]
 

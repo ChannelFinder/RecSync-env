@@ -3,15 +3,23 @@
 # Logging detail level.  Use python logging level name.
 loglevel = WARN
 
-# list of broadcast addresses.
-# default
-#addrlist = 255.255.255.255:5049
-# for local testing w/ firewall
-#addrlist = 127.255.255.255:5049
+# list of broadcast address:port with comma ',' seperated.
+# a broadcast address in the same subnet where RecCeiver runs : 127.255.255.255
+# 
+#  another broadcast address in other subnet, which iocs runs : 192.168.199.255 
+#  For example, IOCs are running on
+#  inet      192.168.196.68
+#  netmask   255.255.252.0
+#  broadcast 192.168.199.255
+#  With them, IOCs can see RecCeiver broadcast within different subnets.
+# 
+addrlist = 127.255.255.255:5049, 192.168.199.255:5049
 
 # Listen for TCP connections on this interface and port.
 # Port also used as source for UDP broadcasts.
 # Default uses wildcard address and a random port.
+# 45722 is the randomly selected port
+# 
 bind = 0.0.0.0:45722
 
 # Processing chain
