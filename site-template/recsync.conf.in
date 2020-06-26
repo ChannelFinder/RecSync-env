@@ -13,7 +13,8 @@ loglevel = WARN
 #  broadcast 192.168.199.255
 #  With them, IOCs can see RecCeiver broadcast within different subnets.
 # 
-addrlist = 127.255.255.255:5049, 192.168.199.255:5049
+#addrlist = 127.255.255.255:5049, 192.168.199.255:5049
+addrList = @RS_ADDR_LIST@
 
 # Listen for TCP connections on this interface and port.
 # Port also used as source for UDP broadcasts.

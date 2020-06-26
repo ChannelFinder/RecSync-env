@@ -1,0 +1,18 @@
+#
+CF_PRTO:=http
+CF_HOST:=localhost
+CF_PORT:=8080
+#
+#
+CF_URL:=$(CF_HOST):$(CF_PORT)/ChannelFinder
+CF_FULL_URL:=$(CF_PRTO)://$(CF_URL)
+CF_USER:=admin
+CF_PASSWD:=1234
+#
+#
+
+RS_ADDR_LIST:=127.255.255.255:5049
+
+# These allow developers to override the variable
+-include $(TOP)/../CONFIG_COMMON.local
+-include $(TOP)/configure/CONFIG_COMMON.local

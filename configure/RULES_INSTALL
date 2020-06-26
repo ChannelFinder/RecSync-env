@@ -53,8 +53,8 @@ src_install: src_preinst
 
 src_preinst: src_versions
 	$(QUIET)$(SUDO) bash $(SITE_TEMPLATE_PATH)/recceiver.postinst "configure" "$(USERID)" "$(GROUPID)"
-	$(QUIET)sed -e "s:@CF_PROPERTIES@:$(CF_PROPERTIES):g"  < $(SITE_TEMPLATE_PATH)/$(CFG_FILE_IN) > $(SITE_TEMPLATE_PATH)/$(CFG_FILE)
-	$(QUIET)sed -e "s|@CF_URL@|$(CF_URL)|g" -e "s:@CF_USER@:$(CF_USER):g" -e "s:@CF_PASSWD@:$(CF_PASSWD):g"  < $(SITE_TEMPLATE_PATH)/channelfinderapi.conf.in > $(SITE_TEMPLATE_PATH)/channelfinderapi.conf
+	$(QUIET)sed -e "s:@CF_PROPERTIES@:$(CF_PROPERTIES):g"  -e "s/@RS_ADDR_LIST@/$(RS_ADDR_LIST)/g" < $(SITE_TEMPLATE_PATH)/$(CFG_FILE_IN) > $(SITE_TEMPLATE_PATH)/$(CFG_FILE)
+	$(QUIET)sed -e "s|@CF_FULL_URL@|$(CF_FULL_URL)|g" -e "s:@CF_USER@:$(CF_USER):g" -e "s:@CF_PASSWD@:$(CF_PASSWD):g"  < $(SITE_TEMPLATE_PATH)/channelfinderapi.conf.in > $(SITE_TEMPLATE_PATH)/channelfinderapi.conf
 	
 
 src_versions:

@@ -1,4 +1,4 @@
 [DEFAULT]  
-BaseURL=@CF_URL@
+BaseURL=@CF_FULL_URL@
 username=@CF_USER@
 password=@CF_PASSWD@

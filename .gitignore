@@ -6,3 +6,11 @@ recsync.service
 *.conf
 *.list
 .versions
+
+# local files
+/configure/*.local
+/configure/RELEASE.*
+/configure/CONFIG_SITE.*
+/modules/RELEASE.*.local
+/modules/Makefile.local
+/*Top/configure/*.local
