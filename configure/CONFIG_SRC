@@ -8,7 +8,7 @@ SUDO := sudo
 #
 # SRC_PATH_INFO 1 : the directory is not there
 # SRC_PATH_INFO 0 : the directory is there
-SRC1_PATH_INFO := $(shell test -d $(SRC1_PATH) 1>&2 2> /dev/null; echo $$?)
+SRC1_PATH_INFO := $(shell test -d $(RS_SRC_PATH) 1>&2 2> /dev/null; echo $$?)
 #
 #
 ifeq "$(SRC1_PATH_INFO)" "1"
@@ -16,7 +16,7 @@ INIT_SRC1 = 1
 endif
 #
 #
-SRC2_PATH_INFO := $(shell test -d $(SRC2_PATH) 1>&2 2> /dev/null; echo $$?)
+SRC2_PATH_INFO := $(shell test -d $(PY_CF_SRC_PATH) 1>&2 2> /dev/null; echo $$?)
 #
 #
 ifeq "$(SRC2_PATH_INFO)" "1"
@@ -24,9 +24,8 @@ INIT_SRC2 = 1
 endif
 #
 #
-SITE_TEMPLATE_PATH:=$(TOP)/site-template
-SYSTEMD_PATH:=/etc/systemd/system
-SYSTEMD_FILENAME:=recsync.service
+RS_SITE_TEMPLATE_PATH:=$(TOP)/site-template
+RS_SYSTEMD_FILENAME:=recsync.service
 #
 #
 VARS_EXCLUDES+=SRC_PATH_INFO
