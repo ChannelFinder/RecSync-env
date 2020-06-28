@@ -33,20 +33,20 @@ init: init1 init2
 # recsync
 init1:
 ifeq "$(INIT_SRC1)" "1"
-	git clone $(SRC1_GITURL) $(SRC1_PATH)
-	cd $(SRC1_PATH) && git checkout $(SRC1_TAG)
+	git clone $(RS_SRC_GITURL) $(RS_SRC_PATH)
+	cd $(RS_SRC_PATH) && git checkout $(RS_SRC_TAG)
 else
-	$(QUIET)echo "$(SRC1_PATH) exists. make distclean first, if one would like to restart it."
+	$(QUIET)echo "$(RS_SRC_PATH) exists. make distclean first, if one would like to restart it."
 endif
 #
 #
 # pyCFClient
 init2:
 ifeq "$(INIT_SRC2)" "1"
-	git clone $(SRC2_GITURL) $(SRC2_PATH)
-	cd $(SRC2_PATH) && git checkout $(SRC2_TAG)
+	git clone $(PY_CF_SRC_GITURL) $(PY_CF_SRC_PATH)
+	cd $(PY_CF_SRC_PATH) && git checkout $(PY_CF_SRC_TAG)
 else
-	$(QUIET)echo "$(SRC2_PATH) exists. make distclean first, if one would like to restart it."
+	$(QUIET)echo "$(PY_CF_SRC_PATH) exists. make distclean first, if one would like to restart it."
 endif
 #
 #
@@ -58,22 +58,22 @@ distclean: distclean1 distclean2
 #
 #
 distclean1:
-ifneq ($(wildcard $(SRC1_PATH)/.*),)
-	$(QUIET)echo "We've found $(SRC1_PATH)"
+ifneq ($(wildcard $(RS_SRC_PATH)/.*),)
+	$(QUIET)echo "We've found $(RS_SRC_PATH)"
 	$(QUIET)echo "Removing ....."
-	$(QUIET)rm -rf $(SRC1_PATH)
+	$(QUIET)rm -rf $(RS_SRC_PATH)
 else
-	$(QUIET)echo "There is no $(SRC1_PATH)."
+	$(QUIET)echo "There is no $(RS_SRC_PATH)."
 endif
 #
 #
 distclean2:
-ifneq ($(wildcard $(SRC2_PATH)/.*),)
-	$(QUIET)echo "We've found $(SRC2_PATH)"
+ifneq ($(wildcard $(PY_CF_SRC_PATH)/.*),)
+	$(QUIET)echo "We've found $(PY_CF_SRC_PATH)"
 	$(QUIET)echo "Removing ....."
-	$(QUIET)rm -rf $(SRC2_PATH)
+	$(QUIET)rm -rf $(PY_CF_SRC_PATH)
 else
-	$(QUIET)echo "There is no $(SRC2_PATH)."
+	$(QUIET)echo "There is no $(PY_CF_SRC_PATH)."
 endif
 #
 #
