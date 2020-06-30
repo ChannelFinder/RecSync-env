@@ -1,10 +1,15 @@
 #
 #
-.PHONY: sd_config sd_install sd_status sd_start sd_stop sd_restart sd_clean sd_enable
+.PHONY: sd_config sd_install sd_status sd_start sd_stop sd_restart sd_clean sd_enable sd_disable
 #
 #
 sd_config:
-	$(QUIET)sed -e "s:_PYTHONPATH_:$(RS_INSTALL_LOCATION):g" -e "s:_TWISDPATH_:$(TWISD_PATH):g" -e "s:_CONFIGFILE_:$(RS_CFG_FILE):g" -e "s:_USERID_:$(RS_USERID):g"  -e "s:_GROUPID_:$(GROUPID):g"  < $(RS_SITE_TEMPLATE_PATH)/rs.service.in > $(RS_SITE_TEMPLATE_PATH)/$(RS_SYSTEMD_FILENAME)
+	$(QUIET)sed -e "s:_PYTHONPATH_:$(RS_INSTALL_LOCATION):g" \
+		    -e "s:_TWISDPATH_:$(TWISD_PATH):g" \
+		    -e "s:_CONFIGFILE_:$(RS_CFG_FILE):g" \
+		    -e "s:_USERID_:$(RS_USERID):g"  \
+		    -e "s:_GROUPID_:$(GROUPID):g"  \
+		    < $(RS_SITE_TEMPLATE_PATH)/rs.service.in > $(RS_SITE_TEMPLATE_PATH)/$(RS_SYSTEMD_FILENAME)
 #
 #	
 sd_install: sd_config
@@ -13,7 +18,7 @@ sd_install: sd_config
 #
 #	
 sd_status:
-	$(QUIET) systemctl status -l $(RS_SYSTEMD_FILENAME) | cat
+	$(QUIET) systemctl status -l $(RS_SYSTEMD_FILENAME) | cat -b
 #
 #
 sd_start:
@@ -34,7 +39,11 @@ sd_clean:
 #
 #
 sd_enable:
-	$(QUIET)$(SUDO) systemctl enable $(RS_SYSTEMD_FILENAME)
+	$(if $(wildcard $(SYSTEMD_PATH)/$(RS_SYSTEMD_FILENAME)), $(SUDO) systemctl enable $(RS_SYSTEMD_FILENAME))
+#
+#
+sd_disable:
+	$(if $(wildcard $(SYSTEMD_PATH)/$(RS_SYSTEMD_FILENAME)), $(SUDO) systemctl disable $(RS_SYSTEMD_FILENAME))
 #
 #
 .PHONY:  src_install src_preinst src_versions src_postrm install uninstall restart
@@ -44,7 +53,7 @@ src_install: src_preinst
 	$(QUIET)$(SUDO) cp -r $(RS_SRC_PATH)/server/recceiver/ $(RS_INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) cp -r $(RS_SRC_PATH)/server/twisted/   $(RS_INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) cp -r $(PY_CF_SRC_PATH)/channelfinder/    $(RS_INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) $(INSTALL) -m 400 -b $(RS_SITE_TEMPLATE_PATH)/$(RS_CFG_FILE)             $(RS_INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) $(INSTALL) -m 400 -b $(RS_SITE_TEMPLATE_PATH)/$(RS_CFG_FILE)          $(RS_INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) $(INSTALL) -m 400 -b $(RS_SITE_TEMPLATE_PATH)/channelfinderapi.conf   $(RS_INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(RS_SITE_TEMPLATE_PATH)/dropin.cache              $(RS_INSTALL_LOCATION)/twisted/plugins/
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(RS_SITE_TEMPLATE_PATH)/.versions                 $(RS_INSTALL_LOCATION)/
@@ -53,14 +62,19 @@ src_install: src_preinst
 
 src_preinst: src_versions
 	$(QUIET)$(SUDO) bash $(RS_SITE_TEMPLATE_PATH)/recceiver.postinst "configure" "$(RS_USERID)" "$(GROUPID)"
-	$(QUIET)sed -e "s:@CF_PROPERTIES@:$(CF_PROPERTIES):g"  -e "s/@RS_ADDR_LIST@/$(RS_ADDR_LIST)/g" < $(RS_SITE_TEMPLATE_PATH)/$(RS_CFG_FILE_IN) > $(RS_SITE_TEMPLATE_PATH)/$(RS_CFG_FILE)
-	$(QUIET)sed -e "s|@CF_FULL_URL@|$(CF_FULL_URL)|g" -e "s:@CF_USER@:$(CF_USER):g" -e "s:@CF_PASSWD@:$(CF_PASSWD):g"  < $(RS_SITE_TEMPLATE_PATH)/channelfinderapi.conf.in > $(RS_SITE_TEMPLATE_PATH)/channelfinderapi.conf
+	$(QUIET)sed -e "s:@CF_PROPERTIES@:$(CF_PROPERTIES):g" \
+		    -e "s/@RS_ADDR_LIST@/$(RS_ADDR_LIST)/g" \
+		    < $(RS_SITE_TEMPLATE_PATH)/$(RS_CFG_FILE_IN) > $(RS_SITE_TEMPLATE_PATH)/$(RS_CFG_FILE)
+	$(QUIET)sed -e "s|@CF_FULL_URL@|$(CF_FULL_URL)|g" \
+		    -e "s:@CF_USER@:$(CF_USER):g" \
+		    -e "s:@CF_PASSWD@:$(CF_PASSWD):g" \
+		    < $(RS_SITE_TEMPLATE_PATH)/channelfinderapi.conf.in > $(RS_SITE_TEMPLATE_PATH)/channelfinderapi.conf
 	
 
 src_versions:
 	$(QUIET)echo "Timestamps : $$(date +%Y%m%d-%H%M%S)/YYYYMMDD-HHMMSS" > $(RS_SITE_TEMPLATE_PATH)/.versions
-	$(QUIET)echo "- SRC1 URL : $(RS_SRC_GITURL)"  >> $(RS_SITE_TEMPLATE_PATH)/.versions
-	$(QUIET)echo "- SRC1 VER : $(RS_SRC_TAG)"     >> $(RS_SITE_TEMPLATE_PATH)/.versions
+	$(QUIET)echo "- SRC1 URL : $(RS_SRC_GITURL)"     >> $(RS_SITE_TEMPLATE_PATH)/.versions
+	$(QUIET)echo "- SRC1 VER : $(RS_SRC_TAG)"        >> $(RS_SITE_TEMPLATE_PATH)/.versions
 	$(QUIET)echo "- SRC2 URL : $(PY_CF_SRC_GITURL)"  >> $(RS_SITE_TEMPLATE_PATH)/.versions
 	$(QUIET)echo "- SRC2 VER : $(PY_CF_SRC_TAG)"     >> $(RS_SITE_TEMPLATE_PATH)/.versions	
 
@@ -75,7 +89,7 @@ install: src_install sd_install sd_enable
 
 
 ## Uninstall RecSync : remove user/group, stop, clean service, remove all
-uninstall: sd_stop sd_clean src_postrm
+uninstall: sd_stop sd_disable sd_clean src_postrm
 	$(QUIET)$(SUDO) rm -rf $(RS_INSTALL_LOCATION)
 
 
