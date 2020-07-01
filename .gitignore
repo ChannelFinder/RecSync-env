@@ -3,9 +3,10 @@
 \#*
 .\#*
 recsync.service
-*.conf
 *.list
 .versions
+site-template/channelfinderapi.conf
+site-template/recsync.conf
 
 # local files
 /configure/*.local
