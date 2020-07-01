@@ -18,15 +18,6 @@ PY_CF_SRC_VERSION:=$(PY_CF_SRC_TAG)
 #
 #
 
-RS_SRC_GITURL:=$(CF_SRC_URL)/$(RS_SRC_NAME)
-### SRC_PATH used for a local directory which is a clone git repository
-RS_SRC_PATH:=$(RS_SRC_NAME)-src
-#
-#
-PY_CF_SRC_GITURL:=$(CF_SRC_URL)/$(PY_CF_SRC_NAME)
-### SRC_PATH used for a local directory which is a clone git repository
-PY_CF_SRC_PATH:=$(PY_CF_SRC_NAME)-src
-#
 
 
 

@@ -4,8 +4,6 @@ CF_HOST:=localhost
 CF_PORT:=8080
 #
 #
-CF_URL:=$(CF_HOST):$(CF_PORT)/ChannelFinder
-CF_FULL_URL:=$(CF_PRTO)://$(CF_URL)
 CF_USER:=admin
 CF_PASSWD:=1234
 #

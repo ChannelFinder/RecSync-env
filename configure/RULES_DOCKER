@@ -1,0 +1,32 @@
+.PHONY: install.docker docker.src_preinst build.docker prune.docker
+
+# twisted will be installed later, so we have to keep dropin.cache in $(RS_INSTALL_LOCATION) first
+# we will move it later within Dockfile
+#
+install.docker: docker.src_preinst
+	$(QUIET)$(INSTALL) --owner=$(RS_USERID) --group=$(GROUPID) -d $(RS_INSTALL_LOCATION)
+	$(QUIET)cp -r $(RS_SRC_PATH)/server/recceiver/    $(RS_INSTALL_LOCATION)/
+	$(QUIET)cp -r $(RS_SRC_PATH)/server/twisted/      $(RS_INSTALL_LOCATION)/
+	$(QUIET)cp -r $(PY_CF_SRC_PATH)/channelfinder/    $(RS_INSTALL_LOCATION)/
+	$(QUIET)$(INSTALL) -m 400 -b $(RS_SITE_TEMPLATE_PATH)/$(RS_CFG_FILE)          $(RS_INSTALL_LOCATION)/
+	$(QUIET)$(INSTALL) -m 400 -b $(RS_SITE_TEMPLATE_PATH)/channelfinderapi.conf   $(RS_INSTALL_LOCATION)/
+	$(QUIET)$(INSTALL) -m 755 -b $(RS_SITE_TEMPLATE_PATH)/dropin.cache            $(RS_INSTALL_LOCATION)/
+	$(QUIET)$(INSTALL_DATA)   -b $(RS_SITE_TEMPLATE_PATH)/.versions               $(RS_INSTALL_LOCATION)/
+	$(QUIET)chown -R $(RS_USERID):$(GROUPID) $(RS_INSTALL_LOCATION)
+
+docker.src_preinst: src_versions
+	$(QUIET)bash $(RS_SITE_TEMPLATE_PATH)/recceiver.postinst "configure" "$(RS_USERID)" "$(GROUPID)"
+	$(QUIET)sed -e "s:@CF_PROPERTIES@:$(CF_PROPERTIES):g" \
+		    -e "s/@RS_ADDR_LIST@/$(RS_ADDR_LIST)/g" \
+		    < $(RS_SITE_TEMPLATE_PATH)/$(RS_CFG_FILE_IN) > $(RS_SITE_TEMPLATE_PATH)/$(RS_CFG_FILE)
+	$(QUIET)sed -e "s|@CF_FULL_URL@|$(CF_FULL_URL)|g" \
+		    -e "s:@CF_USER@:$(CF_USER):g" \
+		    -e "s:@CF_PASSWD@:$(CF_PASSWD):g" \
+		    < $(RS_SITE_TEMPLATE_PATH)/channelfinderapi.conf.in > $(RS_SITE_TEMPLATE_PATH)/channelfinderapi.conf
+
+build.docker:
+	$(QUIET) bash $(TOP)/docker/scripts/docker_builder.bash -a "RS_INSTALL_LOCATION=$(RS_INSTALL_LOCATION) CF_PORT_HTTP=$(CF_PORT)"
+
+prune.docker:
+	$(QUIET)docker system prune --force
+	$(QUIET)yes | docker image prune

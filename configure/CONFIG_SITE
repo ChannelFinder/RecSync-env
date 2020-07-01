@@ -33,7 +33,6 @@ GROUPID:=65534
 #
 
 
-
 # These allow developers to override the CONFIG_SITE variable
 # settings without having to modify the configure/CONFIG_SITE
 # file itself.

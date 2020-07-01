@@ -1,0 +1,16 @@
+# Due to .local file, we have to define them out of .local configuration files.
+#
+#
+CF_URL:=$(CF_HOST):$(CF_PORT)/ChannelFinder
+CF_FULL_URL:=$(CF_PRTO)://$(CF_URL)
+#
+#
+RS_SRC_GITURL:=$(CF_SRC_URL)/$(RS_SRC_NAME)
+### SRC_PATH used for a local directory which is a clone git repository
+RS_SRC_PATH:=$(RS_SRC_NAME)-src
+#
+#
+PY_CF_SRC_GITURL:=$(CF_SRC_URL)/$(PY_CF_SRC_NAME)
+### SRC_PATH used for a local directory which is a clone git repository
+PY_CF_SRC_PATH:=$(PY_CF_SRC_NAME)-src
+#
