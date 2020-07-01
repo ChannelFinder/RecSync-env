@@ -50,12 +50,12 @@ sd_disable:
 
 src_install: src_preinst
 	$(QUIET)$(SUDO) $(INSTALL) --owner=$(RS_USERID) --group=$(GROUPID) -d $(RS_INSTALL_LOCATION)
-	$(QUIET)$(SUDO) cp -r $(RS_SRC_PATH)/server/recceiver/ $(RS_INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) cp -r $(RS_SRC_PATH)/server/twisted/   $(RS_INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) cp -r $(RS_SRC_PATH)/server/recceiver/    $(RS_INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) cp -r $(RS_SRC_PATH)/server/twisted/      $(RS_INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) cp -r $(PY_CF_SRC_PATH)/channelfinder/    $(RS_INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) $(INSTALL) -m 400 -b $(RS_SITE_TEMPLATE_PATH)/$(RS_CFG_FILE)          $(RS_INSTALL_LOCATION)/
 	$(QUIET)$(SUDO) $(INSTALL) -m 400 -b $(RS_SITE_TEMPLATE_PATH)/channelfinderapi.conf   $(RS_INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(RS_SITE_TEMPLATE_PATH)/dropin.cache              $(RS_INSTALL_LOCATION)/twisted/plugins/
+	$(QUIET)$(SUDO) $(INSTALL) -m 755 -b $(RS_SITE_TEMPLATE_PATH)/dropin.cache            $(RS_INSTALL_LOCATION)/twisted/plugins/
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(RS_SITE_TEMPLATE_PATH)/.versions                 $(RS_INSTALL_LOCATION)/
 	$(QUIET)$(SUDO)	chown -R $(RS_USERID):$(GROUPID) $(RS_INSTALL_LOCATION)
 	$(QUIET) rm -f $(RS_SITE_TEMPLATE_PATH)/.versions
