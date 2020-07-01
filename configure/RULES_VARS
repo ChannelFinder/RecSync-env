@@ -55,8 +55,11 @@ print-%:
 FORCE:
 
 exist:
+ifeq (, $(shell which tree))
+	$(if $(wildcard $(RS_INSTALL_LOCATION)), @ ls -d $(RS_INSTALL_LOCATION) && find $(RS_INSTALL_LOCATION)/ -maxdepth $(LEVEL) | sed -e "s/[^-][^\/]*\// |/g" -e "s/|\([^ ]\)/:---\1/")
+else
 	$(if $(wildcard $(RS_INSTALL_LOCATION)), tree -aL $(LEVEL) $(RS_INSTALL_LOCATION), $(QUIET)echo "No $(RS_INSTALL_LOCATION)")
-
+endif
 
 
 VARS_EXCLUDES+=FILTER
