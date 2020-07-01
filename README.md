@@ -1,5 +1,8 @@
 RecSync-env
 ===
+![RecSync-env installation test](https://github.com/ChannelFinder/RecSync-env/workflows/RecSync-env%20installation%20test/badge.svg)
+![Docker Image CI](https://github.com/ChannelFinder/RecSync-env/workflows/Docker%20Image%20CI/badge.svg)
+
 Configuration Environment for the recsync server (aka. RecCeiver) at https://github.com/ChannelFinder/recsync/tree/master/server
 
 ## Role
