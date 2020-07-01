@@ -19,9 +19,7 @@ jobs:
     - run: |
         make init
         make vars
-     - run: |
+    - run: |
         make install
         make exist
-
-     
-                
+  
