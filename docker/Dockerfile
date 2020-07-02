@@ -16,8 +16,8 @@ ARG RS_BIND_PORT=45722
 
 RUN apt update
 RUN apt install -y \
-        make \
-	git
+    make \
+    git
 
 WORKDIR $WorkPath
 COPY . .
@@ -26,9 +26,8 @@ RUN echo "RS_INSTALL_LOCATION:=${RS_INSTALL_LOCATION}" > configure/CONFIG_SITE.l
 RUN rm -rf ${RS_INSTALL_LOCATION}
 RUN make distclean && \
     make init && \
-    make vars && \
+    make vars && \\
     make install.docker
-
 
 ## Multi-Stages build
 FROM debian:buster-slim
@@ -90,4 +89,3 @@ COPY ./docker/scripts/entrypoint.sh /entrypoint.sh
 # /usr/bin/twistd: The specified reactor cannot be used, failed with error: reactor already installed.
 RUN /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-
