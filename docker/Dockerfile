@@ -27,7 +27,7 @@ RUN rm -rf ${RS_INSTALL_LOCATION}
 RUN make distclean && \
     make init && \
     make vars && \\
-    make install.docker
+    make install.docker || exit
 
 ## Multi-Stages build
 FROM debian:buster-slim
