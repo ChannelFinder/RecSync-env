@@ -9,7 +9,7 @@
 ## RS_INSTALL_LOCATION is defined in Docker environment variable
 ## entrypoint.sh is located in /
 ##
-cd "${RS_INSTALL_LOCATION}"
+cd "${RS_INSTALL_LOCATION}" || exit
 
 command="twistd --rundir . --pidfile= --reactor=poll --nodaemon recceiver -f ./recsync.conf"
 eval "$command"
