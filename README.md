@@ -3,14 +3,14 @@ RecSync-env
 ![RecSync-env installation test](https://github.com/ChannelFinder/RecSync-env/workflows/RecSync-env%20installation%20test/badge.svg)
 ![Docker Image CI](https://github.com/ChannelFinder/RecSync-env/workflows/Docker%20Image%20CI/badge.svg)
 
-Configuration Environment for the recsync server (aka. RecCeiver) at https://github.com/ChannelFinder/recsync/tree/master/server
+Configuration Environment for the recsync server (aka. RecCeiver) at <https://github.com/ChannelFinder/recsync/tree/master/server>
 
 ## Role
 In order to download, install, setup all relevant components, one should do many steps manually. This repository was designed for the easy-to-reproducible environment for recsync server (aka RecCeiver).
 
 
 ## Requirements 
-* ChannelFinder : Please check it https://github.com/ChannelFinder/ChannelFinder-env 
+* ChannelFinder : Please check it <https://github.com/ChannelFinder/ChannelFinder-env>
 * systemd service : this repository has its own systemd configuration. 
 * `SUDO` permission
 * Few system packages : Please see below. We **will** use the system default python packages and system package manager (e.g., apt for Debian) instead of `conda`, `pip`, or whatever python tools, because we would like to install `RecCeiver` in a specific local directory instead of any Python related paths. This approach gives users, who may not be familiar with many Python environments, to focus only `RecCeiver`. I am sure that users should learn million different and continuous evolving Python environments later if one would like to use it within them.  
@@ -21,25 +21,25 @@ In order to download, install, setup all relevant components, one should do many
 
 * Debian 10
 
-```
-$ sudo apt install sqlite3 python-twisted python-requests python-simplejson python-urllib3
+```bash
+sudo apt install sqlite3 python-twisted python-requests python-simplejson python-urllib3
 ```
 
 * CentOS 7
-```
-$ sudo yum install sqlite  python-twisted-web python-requests python2-simplejson python-urllib3
+```bash
+sudo yum install sqlite  python-twisted-web python-requests python2-simplejson python-urllib3
 ```
  
 * CentOS 8
 
-```
-$ sudo dnf install sqlite python3-twisted python-requests-futures python3-simplejson python3-urllib3
-$ sudo update-alternatives --set python /usr/bin/python3
+```bash
+sudo dnf install sqlite python3-twisted python-requests-futures python3-simplejson python3-urllib3
+sudo update-alternatives --set python /usr/bin/python3
 ```
 
 * Fedora 31
-```
-$ sudo dnf install sqlite python3-twisted python-requests-futures python3-simplejson python3-urllib3
+```bash
+sudo dnf install sqlite python3-twisted python-requests-futures python3-simplejson python3-urllib3
 ```
 
 ### Python 
@@ -51,7 +51,7 @@ Python 2.7.16 (default, Oct 10 2019, 22:02:15)
 ```
 
 * Fedora 31
-```
+```bash
 $ python
 Python 3.8.2 (default, Feb 28 2020, 00:00:00) 
 [GCC 10.0.1 20200216 (Red Hat 10.0.1-0.8)] on linux
@@ -84,11 +84,11 @@ Python 3.8.2 (default, Feb 28 2020, 00:00:00)
 Note that this example has the assumption which ES service is running.
 
 
-```
-$ make init
-$ make install
-$ sudo systemctl start recsync.service
-$ systemctl status recsync.service
+```bash
+make init
+make install
+sudo systemctl start recsync.service
+systemctl status recsync.service
 ```
 
 
@@ -107,24 +107,24 @@ See [docs/Docker.md](docs/Docker.md) :whale:
 
 Modify any configuration files, and then run the following command:
 
-```
-$ make restart
-$ sudo systemctl start recsync.service
-$ systemctl status recsync.service
+```bash
+make restart
+sudo systemctl start recsync.service
+systemctl status recsync.service
 ```
 
 ## Notice
 
-* If one installs this at the first time, or reinstall from scratch, for example, `make restart`, one has to start its systemd service one more time, because of the issue mentioned in https://github.com/ChannelFinder/recsync/issues/37
+* If one installs this at the first time, or reinstall from scratch, for example, `make restart`, one has to start its systemd service one more time, because of the issue mentioned in <https://github.com/ChannelFinder/recsync/issues/37>.
 
-* There are two important configuration files, which are configured carefully. One is `site-template/recsync.conf.in` and the other is `site-template/channelfinderapi.conf`. Especially, one should use the same and correct information in `channelfinderapi.conf` in order to match with its ChannelFinder configuration. For example, user name and its password should be matched with https://github.com/ChannelFinder/ChannelFinder-env/blob/master/site-template/cf4als.ldif. 
+* There are two important configuration files, which are configured carefully. One is `site-template/recsync.conf.in` and the other is `site-template/channelfinderapi.conf`. Especially, one should use the same and correct information in `channelfinderapi.conf` in order to match with its ChannelFinder configuration. For example, user name and its password should be matched with <https://github.com/ChannelFinder/ChannelFinder-env/blob/master/site-template/cf4als.ldif>.
 
 ## Reference
 
-[1] https://github.com/ChannelFinder/pyCFClient
+[1] <https://github.com/ChannelFinder/pyCFClient>
 
-[2] https://github.com/ChannelFinder/recsync
+[2] <https://github.com/ChannelFinder/recsync>
 
-[3] https://epics-controls.org/
+[3] <https://epics-controls.org>
 
 

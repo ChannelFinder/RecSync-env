@@ -14,9 +14,6 @@ declare -gr LOGDATE="$(date +%y%m%d%H%M)"
 function pushd { builtin pushd "$@" > /dev/null; }
 function popd  { builtin popd  "$@" > /dev/null; }
 
-
-
-
 declare -g TARGET_NAME=""
 declare -g DOCKER_ID=""
 declare -g BUILD_ARGS=""
@@ -184,4 +181,3 @@ else
     eval "${command}"
 fi
 popd
-

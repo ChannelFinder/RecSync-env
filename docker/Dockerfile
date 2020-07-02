@@ -53,16 +53,16 @@ LABEL org.label-schema.version=$BUILD_VERSION
 LABEL org.label-schema.docker.cmd="docker run --network=host --detach --rm --name=recsync jeonghanlee/recsync:tagname"
 
 ### RecCeiver PORT / Installation location configuration.
-ENV RS_SERVER_PORT ${RS_SERVER_PORT}
-ENV RS_PORT_BROADCAST ${RS_PORT_BROADCAST}
-ENV RS_INSTALL_LOCATION ${RS_INSTALL_LOCATION}
-ENV CF_PORT_HTTP ${CF_PORT_HTTP}
-ENV RS_BIND_PORT ${RS_BIND_PORT}
-ENV PYTHONPATH ${RS_INSTALL_LOCATION}
+ENV RS_SERVER_PORT $RS_SERVER_PORT
+ENV RS_PORT_BROADCAST $RS_PORT_BROADCAST
+ENV RS_INSTALL_LOCATION $RS_INSTALL_LOCATION
+ENV CF_PORT_HTTP $CF_PORT_HTTP
+ENV RS_BIND_PORT $RS_BIND_PORT
+ENV PYTHONPATH $RS_INSTALL_LOCATION
 #
 #
 ### YOUR TIME ZONE
-ENV TZ ${TZ}
+ENV TZ $TZ
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ### Reconfigure tzdata
 RUN dpkg-reconfigure -f noninteractive tzdata
@@ -71,8 +71,8 @@ RUN apt update && apt install -y python-twisted python-requests python-simplejso
 
 
 WORKDIR ${RS_INSTALL_LOCATION}
-COPY --from=builder ${RS_INSTALL_LOCATION} .
-COPY --from=builder ${RS_INSTALL_LOCATION}/dropin.cache ./twisted/plugins/
+COPY --from=builder $RS_INSTALL_LOCATION .
+COPY --from=builder $RS_INSTALL_LOCATION/dropin.cache ./twisted/plugins/
 ##
 # CF Port : http
 EXPOSE $CF_PORT_HTTP/tcp
