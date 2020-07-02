@@ -24,11 +24,11 @@ COPY . .
 RUN echo "CF_PORT:=${CF_PORT_HTTP}" > configure/CONFIG_COMMON.local
 RUN echo "RS_INSTALL_LOCATION:=${RS_INSTALL_LOCATION}" > configure/CONFIG_SITE.local
 RUN rm -rf ${RS_INSTALL_LOCATION}
-RUN make distclean || exit && \
-    make init || exit && \
-    make vars || exit && \\
-    make install.docker || exit && \
-    make exist || exit
+RUN make distclean && \
+    make init && \
+    make vars && \
+    make install.docker && \
+    make exist
     
 
 ## Multi-Stages build
