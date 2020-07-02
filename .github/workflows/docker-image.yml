@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Image
 
 on:
   push:
@@ -11,10 +11,13 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    
+    continue-on-error: false
+    
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: make build.docker
+      run: |
+        make build.docker || exit
 
       

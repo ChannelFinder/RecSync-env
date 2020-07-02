@@ -26,8 +26,10 @@ RUN echo "RS_INSTALL_LOCATION:=${RS_INSTALL_LOCATION}" > configure/CONFIG_SITE.l
 RUN rm -rf ${RS_INSTALL_LOCATION}
 RUN make distclean && \
     make init && \
-    make vars && \\
-    make install.docker
+    make vars && \
+    make install.docker && \
+    make exist
+    
 
 ## Multi-Stages build
 FROM debian:buster-slim
