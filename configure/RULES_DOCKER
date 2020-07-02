@@ -1,5 +1,6 @@
 .PHONY: install.docker docker.src_preinst build.docker prune.docker
 
+# Docker internal install rule
 # twisted will be installed later, so we have to keep dropin.cache in $(RS_INSTALL_LOCATION) first
 # we will move it later within Dockfile
 #
@@ -24,7 +25,7 @@ docker.src_preinst: src_versions
 		    -e "s:@CF_PASSWD@:$(CF_PASSWD):g" \
 		    < $(RS_SITE_TEMPLATE_PATH)/channelfinderapi.conf.in > $(RS_SITE_TEMPLATE_PATH)/channelfinderapi.conf
 
-build.docker:
+build.docker: distclean
 	$(QUIET) bash $(TOP)/docker/scripts/docker_builder.bash -a "RS_INSTALL_LOCATION=$(RS_INSTALL_LOCATION) CF_PORT_HTTP=$(CF_PORT)"
 
 prune.docker:
