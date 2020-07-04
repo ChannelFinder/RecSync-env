@@ -20,4 +20,3 @@ jobs:
 #          VALIDATE_ALL_CODEBASE: true
           VALIDATE_MD: true
           VALIDATE_BASH: true
-
