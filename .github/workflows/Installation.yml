@@ -17,11 +17,8 @@ jobs:
     - uses: actions/checkout@v2
     - run: sudo apt install -y python-twisted python-requests python-simplejson python-urllib3 git make
     - run: |
-        make init
-        make vars
+        make init || exit
+        make vars || exit
     - run: |
-        make install
-        make exist
-
-     
-                
+        make install || exit
+        make exist || exist
