@@ -68,7 +68,7 @@ RUN apk add --no-cache bash py-twisted py-simplejson py-urllib3 py2-setuptools p
 WORKDIR ${RS_INSTALL_LOCATION}
 COPY --from=builder $RS_INSTALL_LOCATION .
 COPY --from=builder $RS_INSTALL_LOCATION/dropin.cache ./twisted/plugins/
-RUN rm -f $RS_INSTALL_LOCATION/dropin.cache
+#RUN rm -f $RS_INSTALL_LOCATION/dropin.cache
 ##
 # CF Port : http
 EXPOSE $CF_PORT_HTTP/tcp
