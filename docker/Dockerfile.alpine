@@ -14,7 +14,7 @@ ARG RS_INSTALL_LOCATION=/opt/recsync
 ARG CF_PORT_HTTP=8080
 ARG RS_BIND_PORT=45722
 
-RUN apk update && apk add make git bash
+RUN apk --no-cache add bash git make
 
 WORKDIR $WorkPath
 COPY . .
@@ -22,10 +22,9 @@ RUN echo "CF_PORT:=${CF_PORT_HTTP}" > configure/CONFIG_COMMON.local
 RUN echo "RS_INSTALL_LOCATION:=${RS_INSTALL_LOCATION}" > configure/CONFIG_SITE.local
 RUN make distclean && \
     make init && \
-    make vars && \
     make install.docker    
 
-## Multi-Stages build : 123MB (buster-slim : 166MB)
+## Multi-Stages build : 124MB (buster-slim : 166MB)
 FROM alpine:3.12
 LABEL maintainer="Jeong Han Lee <jeonghan.lee@gmail.com>"
 
@@ -59,12 +58,14 @@ ENV PYTHONPATH $RS_INSTALL_LOCATION
 ### YOUR TIME ZONE
 ENV TZ $TZ
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 ### Install minimal packages for RecSync with alpine
 ##  Python 3.8.3-r0 in alpine 3.12, we can reduce the image size of 85.2MB, but it doesn't work due to 
 ##  imcompatiblities in py3-requests
 ##  RUN apk add --no-cache bash py3-twisted py3-simplejson py3-urllib3 py3-setuptools py3-requests
 ### Even if Python2, apk install a lot of Python3 packages, so we reduce the size only 43MB 
-RUN apk add --no-cache bash py-twisted py-simplejson py-urllib3 py2-setuptools py-requests
+RUN apk add --no-cache bash py-twisted py-simplejson py-urllib3 py2-setuptools py-requests tzdata
+
 WORKDIR ${RS_INSTALL_LOCATION}
 COPY --from=builder $RS_INSTALL_LOCATION .
 COPY --from=builder $RS_INSTALL_LOCATION/dropin.cache ./twisted/plugins/
