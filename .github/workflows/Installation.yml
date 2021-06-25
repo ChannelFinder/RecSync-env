@@ -1,5 +1,4 @@
 
-
 name: RecSync-env installation test
 
 on:
@@ -11,7 +10,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: uubuntu-18.04
 
     steps:
     - uses: actions/checkout@v2
