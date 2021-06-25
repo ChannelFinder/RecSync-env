@@ -4,7 +4,7 @@
 CF_SRC_URL:=https://github.com/ChannelFinder
 RS_SRC_NAME:=recsync
 ### Which the source tag / branch / hash id would like to use
-RS_SRC_TAG:=ae7f476
+RS_SRC_TAG:=48fcbe8
 ### Placeholder for the site-specific version control 
 RS_SRC_VERSION:=$(RS_SRC_TAG)
 #
