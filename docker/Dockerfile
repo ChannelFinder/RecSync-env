@@ -40,11 +40,11 @@ ARG TZ=America/Los_Angeles
 # Labels.
 LABEL org.label-schema.schema-version="1.0"
 LABEL org.label-schema.build-date=$BUILD_DATE
-LABEL org.label-schema.name="jeonghanlee/recsync"
+LABEL org.label-schema.name="alscontrols/recsync"
 LABEL org.label-schema.description="EPICS RecSync Server (RecCeiver) Docker Image"
 LABEL org.label-schema.url="https://github.com/ChannelFinder/RecSync-env/"
 LABEL org.label-schema.version=$BUILD_VERSION
-LABEL org.label-schema.docker.cmd="docker run --network=host --detach --rm --name=recsync jeonghanlee/recsync:tagname"
+LABEL org.label-schema.docker.cmd="docker run --network=host --detach --rm --name=recsync alscontrols/recsync:latest"
 
 ### RecCeiver PORT / Installation location configuration.
 ENV RS_SERVER_PORT $RS_SERVER_PORT
