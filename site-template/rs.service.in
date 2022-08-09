@@ -3,7 +3,7 @@ Description=RecSync Service
 Documentation=https://github.com/ChannelFinder/recsync/tree/master/server
 Documentation=https://github.com/ChannelFinder/pyCFClient
 After=network.target channelfinder.service
-Wants=channelfinder.service
+Requires=channelfinder.service
 
 [Service]
 
@@ -29,6 +29,7 @@ ExecStart=_TWISDPATH_/twistd   --logfile=_PYTHONPATH_/recsync.log \
 			       --nodaemon recceiver -f _PYTHONPATH_/_CONFIGFILE_
 
 Restart=always
+RestartSec=10s
 
 [Install]
 WantedBy=multi-user.target
