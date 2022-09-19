@@ -28,6 +28,7 @@ jobs:
     - name: Install required packages
       run: |
         apt update -y
+        apt install -y git make sudo tree which
         apt install -y python3-twisted python3-requests python3-simplejson python3-urllib3
         update-alternatives --install /usr/bin/python python /usr/bin/python3 1
         update-alternatives --install /usr/bin/twistd twistd /usr/bin/twistd3 1
