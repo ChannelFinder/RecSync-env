@@ -22,25 +22,26 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
     - name: Install required packages
       run: |
         apt update -y
-        apt install -y python-twisted python-requests python-simplejson python-urllib3
+        apt install -y git make sudo tree
+        apt install -y python3-twisted python3-requests python3-simplejson python3-urllib3
+        update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+        update-alternatives --install /usr/bin/twistd twistd /usr/bin/twistd3 1
     - name: Check PYTHON environment
       run: |
         which python
-        which twisted
         python --version
+        which twistd
+        twistd --version
     - name: Configuration
       run: |
         make init
         make vars
     - name: Build 
       run: |
-        make src_install
+        make install
     - name: Environment Check
       run: make exist
      
