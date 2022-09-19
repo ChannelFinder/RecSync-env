@@ -24,18 +24,23 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
     - name: Install required packages
       run: |
+        dnf -y install dnf-plugins-core
         dnf update -y
-        dnf install -y git make sudo which python3-twisted python-requests python3-simplejson python3-urllib3
+        dnf config-manager --set-enabled powertools
+        dnf update -y
+        dnf -y install "epel-release"
+        dnf update -y
+        dnf install -y git make sudo tree which
+        dnf install -y python3-twisted python3-requests python3-simplejson python3-urllib3
+        alternatives --set python /usr/bin/python3
     - name: Check PYTHON environment
       run: |
         which python
-        which twisted
         python --version
+        which twistd
+        twistd --version
     - name: Configuration
       run: |
         make init
