@@ -29,7 +29,6 @@ jobs:
     - name: Install required packages
       run: |
         apt update -y
-        apt install -y python-twisted python-requests python-simplejson python-urllib3
     - name: Check PYTHON environment
       run: |
         which python
