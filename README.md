@@ -1,8 +1,7 @@
 # RecSync-env
-
-![RecSync-env installation test](https://github.com/ChannelFinder/RecSync-env/workflows/RecSync-env%20installation%20test/badge.svg)
-![Docker Image CI](https://github.com/ChannelFinder/RecSync-env/workflows/Docker%20Image%20CI/badge.svg)
-![Linter Run](https://github.com/ChannelFinder/RecSync-env/workflows/Linter%20Run/badge.svg)
+[![Debian 11](https://github.com/jeonghanlee/RecSync-env/actions/workflows/debian11.yml/badge.svg)](https://github.com/jeonghanlee/RecSync-env/actions/workflows/debian11.yml)
+[![Ubuntu latest](https://github.com/jeonghanlee/RecSync-env/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/jeonghanlee/RecSync-env/actions/workflows/ubuntu.yml)
+[![Rocky8](https://github.com/jeonghanlee/RecSync-env/actions/workflows/rocky8.yml/badge.svg)](https://github.com/jeonghanlee/RecSync-env/actions/workflows/rocky8.yml)
 
 Configuration Environment for the recsync server (aka. RecCeiver) at <https://github.com/ChannelFinder/recsync/tree/master/server>
 
