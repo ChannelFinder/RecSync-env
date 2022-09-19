@@ -1,12 +1,15 @@
+vpath %.local $(TOP)/configure
+vpath %.in $(RS_SITE_TEMPLATE_PATH)
+vpath %.in $(RS_SITE_TEMPLATE_PATH)/systemd
+vpath %.services $(RS_SITE_TEMPLATE_PATH)/systemd
+
 #
 include $(TOP)/configure/RULES_FUNC
-#
 include $(TOP)/configure/RULES_SRC
-#
 include $(TOP)/configure/RULES_INSTALL
-#
+include $(TOP)/configure/RULES_SYSTEMD
 include $(TOP)/configure/RULES_DOCKER
-#
+include $(TOP)/configure/RULES_PROPERTIES
 include $(TOP)/configure/RULES_VARS
 #
 

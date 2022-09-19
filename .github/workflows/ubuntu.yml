@@ -1,0 +1,46 @@
+---
+name: Ubuntu latest
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignores:
+      - '*.md'
+      - 'docker/**'
+      - '.github/workflows/docker.yml'
+      - '.github/workflows/ubuntu.yml'
+      - '.github/workflows/rocky8.yml'
+      - '.github/workflows/linter.yml'
+
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  Ubuntu:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    - name: Install required packages
+      run: |
+        apt update -y
+        apt install -y python-twisted python-requests python-simplejson python-urllib3
+    - name: Check PYTHON environment
+      run: |
+        which python
+        which twisted
+        python --version
+    - name: Configuration
+      run: |
+        make init
+        make vars
+    - name: Build 
+      run: |
+        make src_install
+    - name: Environment Check
+      run: make exist
+     

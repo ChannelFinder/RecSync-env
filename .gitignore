@@ -15,3 +15,4 @@ site-template/recsync.conf
 /modules/RELEASE.*.local
 /modules/Makefile.local
 /*Top/configure/*.local
+*.swp

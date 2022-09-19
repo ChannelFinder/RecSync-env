@@ -24,7 +24,6 @@ INIT_SRC2 = 1
 endif
 #
 #
-RS_SITE_TEMPLATE_PATH:=$(TOP)/site-template
 RS_SYSTEMD_FILENAME:=recsync.service
 #
 #

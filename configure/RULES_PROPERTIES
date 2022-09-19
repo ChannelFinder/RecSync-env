@@ -1,0 +1,36 @@
+
+properties_RULES_NAMES:=recsync cfapi
+conf_properties_RULES:=$(addprefix conf., $(properties_RULES_NAMES))
+show_properties_RULES:=$(addsuffix .show, $(conf_properties_RULES))
+
+RULES_VARS+=conf.rsproperties conf.rsproperties.show
+
+conf.rsproperties: $(conf_properties_RULES)
+
+conf.rsproperties.show: $(show_properties_RULES)
+
+conf.recsync: $(RECSYNC_CONF).in
+	$(QUIET)echo ">>> Generate $(basename $<) from $<"
+	$(QUIET)sed -e "s|@RS_CFG_LOGLEVEL@|$(RS_CFG_LOGLEVEL)|g" \
+		        -e "s|@RS_ADDR_LIST@|$(RS_ADDR_LIST)|g" \
+		        -e "s|@RS_BIND_ADDR@|$(RS_BIND_ADDR)|g" \
+		        -e "s|@RS_PROCS_CHAIN@|$(RS_PROCS_CHAIN)|g" \
+		        -e "s|@RS_ANNOUNCE_INTERVAL@|$(RS_ANNOUNCE_INTERVAL)|g" \
+		        -e "s|@RS_TCPTIMEOUT@|$(RS_TCPTIMEOUT)|g" \
+		        -e "s|@RS_COMMIT_INTERVAL@|$(RS_COMMIT_INTERVAL)|g" \
+		        -e "s|@RS_MAXACTIVE@|$(RS_MAXACTIVE)|g" \
+		        -e "s|@RS_PROPERTIES_INFOTAGS@|$(RS_PROPERTIES_INFOTAGS)|g" \
+		        < $< > $(basename $<)
+
+conf.recsync.show: $(RECSYNC_CONF).in
+	cat -b $(basename $<)
+
+conf.cfapi: $(CFAPI_CONF).in
+	$(QUIET)echo ">>> Generate $(basename $<) from $<"
+	$(QUIET)sed -e "s|@CF_FULL_URL@|$(CF_FULL_URL)|g" \
+		        -e "s|@CF_USER@|$(CF_USER)|g" \
+		        -e "s|@CF_PASSWD@|$(CF_PASSWD)|g" \
+		        < $< > $(basename $<)
+
+conf.cfapi.show: $(CFAPI_CONF).in
+	cat -b $(basename $<)
