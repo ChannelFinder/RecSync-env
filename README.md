@@ -22,10 +22,10 @@ In order to download, install, setup all relevant components, one should do many
 
 Note that `sqlite3` may not be necessary if one would like to test it with ChannelFinder directly.
 
-* Debian 10
+* Debian 11
 
 ```bash
-sudo apt install sqlite3 python-twisted python-requests python-simplejson python-urllib3
+sudo apt install sqlite3 python3-twisted python3-requests python3-simplejson python3-urllib3
 ```
 
 * CentOS 7
