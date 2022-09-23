@@ -85,5 +85,5 @@ EXPOSE $RS_BIND_PORT/udp
 COPY ./docker/scripts/entrypoint.sh /entrypoint.sh
 # First run is necessary, because of the following error
 # /usr/bin/twistd: The specified reactor cannot be used, failed with error: reactor already installed.
-RUN /entrypoint.sh
+# The latest version do not need this. RUN /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
