@@ -4,8 +4,6 @@ name: Debian 11
 on:
   push:
     branches: [ master ]
-    paths:
-      - '.github/workflows/debian11.yml'
     paths-ignores:
       - '*.md'
       - 'docker/**'
