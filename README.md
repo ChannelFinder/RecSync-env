@@ -45,7 +45,8 @@ make local.rm
 
 ## Docker Image
 
-See [docs/Docker.md](docs/Docker.md) :whale:
+* The Docker image is hosted at https://hub.docker.com/orgs/alscontrols. 
+* See [docs/Docker.md](docs/Docker.md) :whale:
 
 ## While evaluating its configuration
 
