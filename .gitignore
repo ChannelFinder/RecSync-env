@@ -16,3 +16,5 @@ site-template/recsync.conf
 /modules/Makefile.local
 /*Top/configure/*.local
 *.swp
+.rs_local_pid
+*.local

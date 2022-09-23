@@ -1,5 +1,5 @@
 # 0. change name
-name: Record Syn
+name: Docker
 # change path name
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
         DOCKER_FILE: docker/Dockerfile 
         DOCKER_ACCOUNT: alscontrols
         DOCKER_REPO: recsync
-        DOCKER_TAG: latest
+        DOCKER_TAG: v2.0.0-pre
         
     steps:
       - 

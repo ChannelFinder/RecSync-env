@@ -10,7 +10,6 @@ RS_INSTALL_LOCATION=$(RS_INSTALL_PATH)/recsync
 RECSYNC_CONF:=recsync.conf
 #
 ### CF Properties for DB info tag
-RS_PROPERTIES_INFOTAGS:=archive elemName elemType elemField devName handle area sector
 RS_CFG_LOGLEVEL=WARN
 RS_BIND_ADDR=0.0.0.0:45722
 RS_PROCS_CHAIN=cf
@@ -18,6 +17,12 @@ RS_ANNOUNCE_INTERVAL=15
 RS_TCPTIMEOUT=15.0
 RS_COMMIT_INTERVAL=5
 RS_MAXACTIVE=20
+RS_CONF_INFOTAGS:=archive elemName elemType elemField devName handle area sector
+# Do not forget to enclose them with " ".
+RS_CONF_ENV_VARS:="ENGINEER:Engineer,EPICS_BASE:EpicsVersion,PWD:WorkingDirectory"
+RS_CONF_ALIAS:=on
+RS_CONF_RECORDTYPE:=on
+RS_CONF_RECORDDESC:=on
 #
 #
 ### Default TWISTD path and its options

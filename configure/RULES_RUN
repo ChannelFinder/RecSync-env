@@ -1,0 +1,17 @@
+#
+.PHONY: local.install local.run local.stop local.rm
+
+
+RS_PID_LOCAL:=$(TOP)/.rs_local_pid
+
+
+local.install: rs_install
+
+local.run:
+	$(QUIET) PYTHONPATH=$(RS_INSTALL_LOCATION) $(TWISTD_PATH)/twistd --logfile=$(RS_INSTALL_LOCATION)/recsync.log --rundir=$(RS_INSTALL_LOCATION) --pidfile=$(RS_PID_LOCAL) --reactor=poll recceiver -f $(RS_INSTALL_LOCATION)/$(RECSYNC_CONF)
+
+local.stop: 
+	$(QUIET) pkill -F $(RS_PID_LOCAL)
+
+local.rm: 
+	$(QUIET)-rm -rf $(RS_INSTALL_LOCATION)

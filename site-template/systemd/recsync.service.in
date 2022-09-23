@@ -22,7 +22,7 @@ Environment="PYTHONPATH=@RS_INSTALL_LOCATION@"
 # take care of this. 
 # 
 ExecStart=@TWISTD_PATH@/twistd --logfile=@RS_INSTALL_LOCATION@/recsync.log \
-			       --rundir @RS_INSTALL_LOCATION@ \
+			       --rundir=@RS_INSTALL_LOCATION@ \
 			       --pidfile= \
 			       --reactor=poll \
 			       --nodaemon recceiver -f @RS_INSTALL_LOCATION@/@RECSYNC_CONF@
