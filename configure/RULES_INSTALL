@@ -1,6 +1,6 @@
 #
 #
-.PHONY: rs_status rs_start rs_stop rs_restart rs_install src_install rs_preinst rs_postrm install uninstall restart
+.PHONY: rs_status rs_start rs_stop rs_restart rs_install rs_uninstall rs_preinst rs_postrm src_install src_uninstall install uninstall restart
 
 rs_status: sd_status
 
@@ -10,7 +10,7 @@ rs_stop: sd_stop
 
 rs_restart: sd_restart
 
-:
+# Pure source file installation, USRID/GROUPID must be defined
 rs_install: conf
 	$(QUIET)$(SUDO) $(INSTALL) -d $(RS_INSTALL_LOCATION) -o $(RS_USERID) -g $(RS_GROUPID)
 	$(QUIET)$(SUDO) cp -r $(RS_SRC_PATH)/server/recceiver    $(RS_INSTALL_LOCATION)/
@@ -22,7 +22,15 @@ rs_install: conf
 	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(RS_SITE_TEMPLATE_PATH)/.versions           $(RS_INSTALL_LOCATION)/
 	$(QUIET)$(SUDO)	chown -R $(RS_USERID):$(RS_GROUPID) $(RS_INSTALL_LOCATION)
 
-src_install: rs_install
+
+rs_uninstall:
+	$(QUIET)$(SUDO) rm -rf $(RS_INSTALL_LOCATION)
+
+# Linux Default USERID/GROUPID configure first, and call rs_install
+src_install: rs_preinst rs_install
+
+src_uninstall: rs_uninstall rs_postrm
+
 
 rs_preinst:
 	$(QUIET)$(SUDO) bash $(RS_SITE_TEMPLATE_PATH)/recceiver.postinst "configure" "$(RS_USERID)" "$(RS_GROUPID)"

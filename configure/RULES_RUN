@@ -13,5 +13,4 @@ local.run:
 local.stop: 
 	$(QUIET) pkill -F $(RS_PID_LOCAL)
 
-local.rm: 
-	$(QUIET)-rm -rf $(RS_INSTALL_LOCATION)
+local.rm: rs_uninstall
