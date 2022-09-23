@@ -14,7 +14,7 @@ ARG CF_PORT_HTTP=8080
 ARG RS_BIND_PORT=45722
 
 # We can check the package availbilities through docker run -t -i --entrypoint /bin/sh alpine:3.16
-RUN iapt update && apk --no-cache add bash git make tree
+RUN apk --no-cache add bash git make tree
 
 WORKDIR $WorkPath
 COPY . .
