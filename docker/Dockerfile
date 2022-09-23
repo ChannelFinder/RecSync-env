@@ -1,20 +1,20 @@
 #
 #  author  : Jeong Han Lee
 #  email   : jeonghan.lee@gmail.com
-#  date    : Wednesday, July  1 15:39:00 PDT 2020
-#  version : 0.0.2
+#  date    : Thu Sep 22 21:40:08 PDT 2022
+#  version : 0.0.3
 
 ## builder : 28.4MB 
-FROM alpine:3.12 AS builder
-ENV WorkPath /home/RecSyn-env
-
+FROM alpine:3.16 AS builder
+ENV WorkPath /home/RecSync-env
 ARG RS_SERVER_PORT=5075
 ARG RS_PORT_BROADCAST=5076
 ARG RS_INSTALL_LOCATION=/opt/recsync
 ARG CF_PORT_HTTP=8080
 ARG RS_BIND_PORT=45722
 
-RUN apk --no-cache add bash git make
+# We can check the package availbilities through docker run -t -i --entrypoint /bin/sh alpine:3.16
+RUN iapt update && apk --no-cache add bash git make tree
 
 WORKDIR $WorkPath
 COPY . .
@@ -25,7 +25,7 @@ RUN make distclean && \
     make install.docker    
 
 ## Multi-Stages build : 124MB (buster-slim : 166MB)
-FROM alpine:3.12
+FROM alpine:3.16
 LABEL maintainer="Jeong Han Lee <jeonghan.lee@gmail.com>"
 
 ARG BUILD_DATE
@@ -64,7 +64,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ##  imcompatiblities in py3-requests
 ##  RUN apk add --no-cache bash py3-twisted py3-simplejson py3-urllib3 py3-setuptools py3-requests
 ### Even if Python2, apk install a lot of Python3 packages, so we reduce the size only 43MB 
-RUN apk add --no-cache bash py-twisted py-simplejson py-urllib3 py2-setuptools py-requests tzdata
+RUN apk add --no-cache bash py3-twisted py3-simplejson py3-urllib3 py3-requests py3-setuptools tzdata
 
 WORKDIR ${RS_INSTALL_LOCATION}
 COPY --from=builder $RS_INSTALL_LOCATION .
