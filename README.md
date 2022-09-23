@@ -2,7 +2,8 @@
 [![Debian 11](https://github.com/jeonghanlee/RecSync-env/actions/workflows/debian11.yml/badge.svg)](https://github.com/jeonghanlee/RecSync-env/actions/workflows/debian11.yml)
 [![Ubuntu latest](https://github.com/jeonghanlee/RecSync-env/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/jeonghanlee/RecSync-env/actions/workflows/ubuntu.yml)
 [![Rocky8](https://github.com/jeonghanlee/RecSync-env/actions/workflows/rocky8.yml/badge.svg)](https://github.com/jeonghanlee/RecSync-env/actions/workflows/rocky8.yml)
-
+[![Linter Run](https://github.com/jeonghanlee/RecSync-env/actions/workflows/linter.yml/badge.svg)](https://github.com/jeonghanlee/RecSync-env/actions/workflows/linter.yml)
+[![Docker](https://github.com/jeonghanlee/RecSync-env/actions/workflows/docker.yml/badge.svg)](https://github.com/jeonghanlee/RecSync-env/actions/workflows/docker.yml)
 Configuration Environment for the recsync server (aka. RecCeiver) at <https://github.com/ChannelFinder/recsync/tree/master/server>
 
 ## Pre-required Packages
