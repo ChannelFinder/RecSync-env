@@ -12,6 +12,14 @@ conf: conf.rsproperties conf.versions
 conf.show: conf.rsproperties.show conf.versions.show
 
 
+conf.local:
+	$(QUIET)echo "RS_INSTALL_LOCATION:=$(TOP)/recsync.local"  > $(TOP)/configure/CONFIG_SITE.local
+	$(QUIET)echo "RS_USERID:=${USER}"                        >> $(TOP)/configure/CONFIG_SITE.local
+	$(QUIET)echo "RS_GROUPID:=1000"                          >> $(TOP)/configure/CONFIG_SITE.local
+
+conf.local.show:
+	cat -b $(TOP)/configure/CONFIG_SITE.local
+
 conf.rsproperties: $(conf_properties_RULES)
 
 conf.rsproperties.show: $(show_properties_RULES)
@@ -27,7 +35,7 @@ conf.recsync: $(RECSYNC_CONF).in
 		        -e "s|@RS_COMMIT_INTERVAL@|$(RS_COMMIT_INTERVAL)|g" \
 		        -e "s|@RS_MAXACTIVE@|$(RS_MAXACTIVE)|g" \
 		        -e "s|@RS_CONF_INFOTAGS@|$(RS_CONF_INFOTAGS)|g" \
-		        -e "s|@RS_CONF_ENV_VARS@|$(RS_CONF_ENV_ARS)|g" \
+		        -e "s|@RS_CONF_ENV_VARS@|$(RS_CONF_ENV_VARS)|g" \
 		        -e "s|@RS_CONF_ALIAS@|$(RS_CONF_ALIAS)|g" \
 		        -e "s|@RS_CONF_RECORDTYPE@|$(RS_CONF_RECORDTYPE)|g" \
 		        -e "s|@RS_CONF_RECORDDESC@|$(RS_CONF_RECORDDESC)|g" \
