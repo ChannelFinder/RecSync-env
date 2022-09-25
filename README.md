@@ -36,12 +36,7 @@ make local.run
 make local.stop
 ```
 
-The log file will be located in `RS_INSTALL_LOCATION`, e.g., `$(TOP)/recsync.local` folder.
-
-
-```
-make local.rm
-```
+The log file will be located in `RS_INSTALL_LOCATION`, e.g., `$(TOP)/recsync.local` folder, which can be checked through `make local.status`. And one can remove all local directory through `make local.rm`
 
 ## Docker Image
 

@@ -14,3 +14,7 @@ local.stop:
 	$(QUIET) pkill -F $(RS_PID_LOCAL)
 
 local.rm: rs_uninstall
+
+
+local.status: 
+	cat -b $(RS_INSTALL_LOCATION)/recsync.log
