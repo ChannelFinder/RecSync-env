@@ -13,6 +13,35 @@ Configuration Environment for the recsync server (aka. RecCeiver) at <https://gi
 git make sudo tree 
 ```
 
+## Debian 11
+
+We may need to tune the default python version as `python3`
+
+```bash
+make install.p3deb
+```
+
+```
+make init
+make conf
+make conf.show
+make install
+make sd_start
+make sd_status
+```
+
+
+```
+make init
+make conf.local
+make conf
+make conf.show
+make src_install
+make exist
+make local.run
+make local.stop
+```
+
 ## macOS
 
 We only support macOS for testing and developing purposes, so we don't have launchd configuration. We localize the recsync service within a local folder, and define several simple Makefile rules to maintain them.

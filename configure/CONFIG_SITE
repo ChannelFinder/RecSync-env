@@ -19,14 +19,14 @@ RS_COMMIT_INTERVAL=5
 RS_MAXACTIVE=20
 RS_CONF_INFOTAGS:=archive elemName elemType elemField devName handle area sector
 # Do not forget to enclose them with " ".
-RS_CONF_ENV_VARS:="ENGINEER:Engineer,EPICS_BASE:EpicsVersion,PWD:WorkingDirectory"
+RS_CONF_ENV_VARS:=\"ENGINEER:Engineer,EPICS_BASE:EpicsVersion,PWD:WorkingDirectory\"
 RS_CONF_ALIAS:=on
 RS_CONF_RECORDTYPE:=on
 RS_CONF_RECORDDESC:=on
 #
 #
 ### Default TWISTD path and its options
-TWISTD_PATH:=/usr/bin
+TWISTD_PATH:=/usr/local/bin
 
 #
 CFAPI_CONF:=channelfinderapi.conf

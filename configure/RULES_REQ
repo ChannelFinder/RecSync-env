@@ -1,6 +1,6 @@
 
 
-rs_RULES_NAMES:=p3mac 
+rs_RULES_NAMES:=p3mac p3deb
 install_rs_RULES:=$(addprefix install., $(es_RULES_NAMES))
 setup_rs_RULES:=$(addprefix setup., $(es_RULES_NAMES))
 remove_rs_RULES:=$(addprefix remove., $(es_RULES_NAMES))
@@ -13,6 +13,8 @@ show_rs_RULES:=$(addprefix show., $(es_RULES_NAMES))
 
 # Debian 11
 
+setup.p3deb: install.p3deb
+
 setup.p3mac: install.p3mac
 
 
@@ -23,5 +25,13 @@ install.p3mac:
 
 show.p3mac:
 	$(QUIET) brew info python@3.10 
+
+
+install.p3deb:
+	$(QUIET) sudo apt install -y python3 
+	$(QUIET) sudo pip3 install twisted simplejson urllib3 requests
+
+show.p3deb:
+	$(QUIET) apt info python3 
 
 
