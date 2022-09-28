@@ -31,7 +31,6 @@ src_install: rs_preinst rs_install
 
 src_uninstall: rs_uninstall rs_postrm
 
-
 rs_preinst:
 	$(QUIET)$(SUDO) bash $(RS_SITE_TEMPLATE_PATH)/recceiver.postinst "configure" "$(RS_USERID)" "$(RS_GROUPID)"
 

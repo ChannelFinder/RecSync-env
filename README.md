@@ -33,13 +33,13 @@ make sd_status
 
 ```
 make init
-make conf.local
-make conf
-make conf.show
-make src_install
+make local.conf
+make local.conf.show
+make local.install
 make exist
 make local.run
 make local.stop
+make local.status
 ```
 
 ## macOS

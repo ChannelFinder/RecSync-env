@@ -5,19 +5,20 @@ show_properties_RULES:=$(addsuffix .show, $(conf_properties_RULES))
 
 RULES_VARS+=conf.rsproperties conf.rsproperties.show
 
-.PHONY: conf conf.rsproperties
+.PHONY: conf conf.rsproperties conf.localconf
 
 conf: conf.rsproperties conf.versions
 
 conf.show: conf.rsproperties.show conf.versions.show
 
+conf.local: conf.localconf conf
 
-conf.local:
+conf.localconf:
 	$(QUIET)echo "RS_INSTALL_LOCATION:=$(TOP)/recsync.local"  > $(TOP)/configure/CONFIG_SITE.local
 	$(QUIET)echo "RS_USERID:=${USER}"                        >> $(TOP)/configure/CONFIG_SITE.local
 	$(QUIET)echo "RS_GROUPID:=1000"                          >> $(TOP)/configure/CONFIG_SITE.local
 
-conf.local.show:
+conf.local.show: conf.show
 	cat -b $(TOP)/configure/CONFIG_SITE.local
 
 conf.rsproperties: $(conf_properties_RULES)
