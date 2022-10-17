@@ -11,6 +11,7 @@ RS_SRC_VERSION:=$(RS_SRC_TAG)
 #
 #
 ### Where the Source repository SRC2_URL/SRC2_NAME
+PY_CF_SRC_URL:=$(CF_SRC_URL)
 PY_CF_SRC_NAME:=pyCFClient
 ### Which the source tag / branch / hash id would like to use
 # 2019-03-04
