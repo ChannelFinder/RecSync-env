@@ -11,7 +11,7 @@ install_systemd_RULES:=$(addprefix install., $(systemd_RULES_NAMES))
 show_install_systemd_RULES:=$(addsuffix .show, $(install_systemd_RULES))
 
 sd_install: conf.systemd install.systemd
-	$(QUIET)$(SUDO) systemctl daemon-reload
+	$(QUIET)$(SUDO) systemctl $(RS_SYSTEMD_USER) daemon-reload
 
 .PHONY: conf.systemd conf.systemd.show
 
@@ -47,19 +47,19 @@ install.systemd0.show:
 #
 #	
 sd_status:
-	$(QUIET) systemctl status -l $(RS_SYSTEMD_FILENAME) | cat -b
+	$(QUIET) systemctl status $(RS_SYSTEMD_USER) -l $(RS_SYSTEMD_FILENAME) | cat -b
 
 #
 sd_start:
-	$(QUIET)$(SUDO) systemctl start $(RS_SYSTEMD_FILENAME)
+	$(QUIET)$(SUDO) systemctl start $(RS_SYSTEMD_USER) $(RS_SYSTEMD_FILENAME)
 #
 # We ignore its error
 sd_stop:
-	-$(QUIET)$(SUDO) systemctl stop $(RS_SYSTEMD_FILENAME)
+	-$(QUIET)$(SUDO) systemctl stop $(RS_SYSTEMD_USER) $(RS_SYSTEMD_FILENAME)
 #
 #
 sd_restart:
-	$(QUIET)$(SUDO) systemctl restart $(RS_SYSTEMD_FILENAME)
+	$(QUIET)$(SUDO) systemctl restart $(RS_SYSTEMD_USER) $(RS_SYSTEMD_FILENAME)
 #
 # We ignore its error
 sd_clean:
@@ -67,10 +67,10 @@ sd_clean:
 #
 #
 sd_enable:
-	$(if $(wildcard $(SYSTEMD_PATH)/$(RS_SYSTEMD_FILENAME)), $(SUDO) systemctl enable $(RS_SYSTEMD_FILENAME))
+	$(if $(wildcard $(SYSTEMD_PATH)/$(RS_SYSTEMD_FILENAME)), $(SUDO) systemctl enable $(RS_SYSTEMD_USER) $(RS_SYSTEMD_FILENAME))
 #
 #
 sd_disable:
-	$(if $(wildcard $(SYSTEMD_PATH)/$(RS_SYSTEMD_FILENAME)), $(SUDO) systemctl disable $(RS_SYSTEMD_FILENAME))
+	$(if $(wildcard $(SYSTEMD_PATH)/$(RS_SYSTEMD_FILENAME)), $(SUDO) systemctl disable $(RS_SYSTEMD_USER) $(RS_SYSTEMD_FILENAME))
 #
 #
