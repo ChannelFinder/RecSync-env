@@ -1,0 +1,22 @@
+#
+local_RULES_NAMES:=install run stop rm status conf conf.show
+local_properties_RULES:=$(addprefix local., $(local_RULES_NAMES))
+
+RS_PID_LOCAL:=$(TOP)/.rs_local_pid
+
+local.conf: conf.local
+
+local.conf.show: conf.local.show
+
+local.install: rs_install
+
+local.run: 
+	$(QUIET) PYTHONPATH=$(RS_INSTALL_LOCATION) $(TWISTD_PATH)/twistd --logfile=$(RS_INSTALL_LOCATION)/recsync.log --rundir=$(RS_INSTALL_LOCATION) --pidfile=$(RS_PID_LOCAL) --reactor=poll recceiver -f $(RS_INSTALL_LOCATION)/$(RECSYNC_CONF)
+
+local.stop: 
+	$(QUIET)-pkill -F $(RS_PID_LOCAL)
+
+local.rm: rs_uninstall
+
+local.status: 
+	cat -b $(RS_INSTALL_LOCATION)/recsync.log

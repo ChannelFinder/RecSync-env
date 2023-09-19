@@ -1,20 +1,19 @@
 [Unit]
 Description=RecSync Service
-Documentation=https://github.com/ChannelFinder/recsync/tree/master/server
-Documentation=https://github.com/ChannelFinder/pyCFClient
-After=network.target channelfinder.service
-Requires=channelfinder.service
+Documentation=@DOCURL1@
+Documentation=@DOCURL2@
+After=network.target @SYSTEMD_SERVICES@
+Requires=@SYSTEMD_SERVICES@
 
 [Service]
-
 #
 # Twistd also has the options, but we use the systemd one instead.
 #
-User=_USERID_
-Group=_GROUPID_
+User=@USERID@
+Group=@GROUPID@
 
 # Everything in a local, so we have to tell where PYTHONPATH is
-Environment="PYTHONPATH=_PYTHONPATH_"
+Environment="PYTHONPATH=@RS_INSTALL_LOCATION@"
 
 # Due to User/Group permission, we cannot generate the recsync.log
 # in /var/log/ folder. So we put in into the recsync installation
@@ -22,11 +21,11 @@ Environment="PYTHONPATH=_PYTHONPATH_"
 # generated. However, we don't need it, since systemd service will
 # take care of this. 
 # 
-ExecStart=_TWISDPATH_/twistd   --logfile=_PYTHONPATH_/recsync.log \
-			       --rundir _PYTHONPATH_ \
+ExecStart=@TWISTD_PATH@/twistd --logfile=@RS_INSTALL_LOCATION@/recsync.log \
+			       --rundir=@RS_INSTALL_LOCATION@ \
 			       --pidfile= \
 			       --reactor=poll \
-			       --nodaemon recceiver -f _PYTHONPATH_/_CONFIGFILE_
+			       --nodaemon recceiver -f @RS_INSTALL_LOCATION@/@RECSYNC_CONF@
 
 Restart=always
 RestartSec=10s

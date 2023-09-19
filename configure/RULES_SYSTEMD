@@ -1,0 +1,76 @@
+#
+#
+.PHONY: sd_install sd_status sd_start sd_stop sd_restart sd_clean sd_enable sd_disable
+#
+#
+
+systemd_RULES_NAMES:=systemd0
+conf_systemd_RULES:=$(addprefix conf., $(systemd_RULES_NAMES))
+show_systemd_RULES:=$(addsuffix .show, $(conf_systemd_RULES))
+install_systemd_RULES:=$(addprefix install., $(systemd_RULES_NAMES))
+show_install_systemd_RULES:=$(addsuffix .show, $(install_systemd_RULES))
+
+sd_install: conf.systemd install.systemd
+	$(QUIET)$(SUDO) systemctl $(RS_SYSTEMD_USER) daemon-reload
+
+.PHONY: conf.systemd conf.systemd.show
+
+conf.systemd: $(conf_systemd_RULES)
+
+conf.systemd.show: $(show_systemd_RULES)
+
+install.systemd: $(install_systemd_RULES)
+
+install.systemd.show: $(show_install_systemd_RULES)
+
+conf.systemd0: $(RS_SYSTEMD_FILENAME).in
+	$(QUIET)echo ">>> Generate $(basename $<) from $<"
+	$(QUIET)echo ">>> $(RS_SYSTEMD_SERVICES)"
+	$(QUIET)sed -e "s|@DOCURL1@|$(DOCURL1)|g" \
+				-e "s|@DOCURL2@|$(DOCURL2)|g" \
+				-e 's|@SYSTEMD_SERVICES@|$(RS_SYSTEMD_SERVICES)|g' \
+				-e "s|@USERID@|$(RS_USERID)|g" \
+				-e "s|@GROUPID@|$(RS_GROUPID)|g" \
+				-e "s|@RS_INSTALL_LOCATION@|$(RS_INSTALL_LOCATION)|g" \
+				-e "s|@TWISTD_PATH@|$(TWISTD_PATH)|g" \
+				-e "s|@RECSYNC_CONF@|$(RECSYNC_CONF)|g" \
+                < $< > $(basename $<)
+
+conf.systemd0.show: $(RS_SYSTEMD_FILENAME).in
+	@cat -b $(basename $<)
+
+install.systemd0: $(RS_SYSTEMD_FILENAME).in
+	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(basename $<) $(SYSTEMD_PATH)/
+
+install.systemd0.show:
+	$(QUIET)cat -b $(SYSTEMD_PATH)/$(RS_SYSTEMD_FILENAME)
+#
+#	
+sd_status:
+	$(QUIET) systemctl status $(RS_SYSTEMD_USER) -l $(RS_SYSTEMD_FILENAME) | cat -b
+
+#
+sd_start:
+	$(QUIET)$(SUDO) systemctl start $(RS_SYSTEMD_USER) $(RS_SYSTEMD_FILENAME)
+#
+# We ignore its error
+sd_stop:
+	-$(QUIET)$(SUDO) systemctl stop $(RS_SYSTEMD_USER) $(RS_SYSTEMD_FILENAME)
+#
+#
+sd_restart:
+	$(QUIET)$(SUDO) systemctl restart $(RS_SYSTEMD_USER) $(RS_SYSTEMD_FILENAME)
+#
+# We ignore its error
+sd_clean:
+	$(if $(wildcard $(SYSTEMD_PATH)/$(RS_SYSTEMD_FILENAME)), $(QUIET)$(SUDO) rm -f $(SYSTEMD_PATH)/$(RS_SYSTEMD_FILENAME))
+#
+#
+sd_enable:
+	$(if $(wildcard $(SYSTEMD_PATH)/$(RS_SYSTEMD_FILENAME)), $(SUDO) systemctl enable $(RS_SYSTEMD_USER) $(RS_SYSTEMD_FILENAME))
+#
+#
+sd_disable:
+	$(if $(wildcard $(SYSTEMD_PATH)/$(RS_SYSTEMD_FILENAME)), $(SUDO) systemctl disable $(RS_SYSTEMD_USER) $(RS_SYSTEMD_FILENAME))
+#
+#

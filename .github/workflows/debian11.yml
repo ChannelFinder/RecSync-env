@@ -1,0 +1,48 @@
+---
+name: Debian 11
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignores:
+      - '*.md'
+      - 'docker/**'
+      - '.github/workflows/docker.yml'
+      - '.github/workflows/ubuntu.yml'
+      - '.github/workflows/rocky8.yml'
+      - '.github/workflows/linter.yml'
+
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  Debian11:
+
+    runs-on: ubuntu-latest
+    container: debian:bullseye
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install required packages
+      run: |
+        apt update -y
+        apt install -y git make sudo tree
+        apt install -y python3-twisted python3-requests python3-simplejson python3-urllib3
+        update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+        update-alternatives --install /usr/bin/twistd twistd /usr/bin/twistd3 1
+    - name: Check PYTHON environment
+      run: |
+        which python
+        python --version
+        which twistd
+        twistd --version
+    - name: Configuration
+      run: |
+        make init
+        make vars
+    - name: Build 
+      run: |
+        make src_install
+    - name: Environment Check
+      run: make exist
+     

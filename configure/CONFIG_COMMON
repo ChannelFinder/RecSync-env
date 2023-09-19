@@ -1,3 +1,4 @@
+
 #
 CF_PRTO:=http
 CF_HOST:=localhost
@@ -9,7 +10,7 @@ CF_PASSWD:=1234
 #
 #
 
-RS_ADDR_LIST:=127.255.255.255:5049
+RS_ADDR_LIST:=127.255.255.255:5049, 10.255.255.255:5049
 
 # These allow developers to override the variable
 -include $(TOP)/../CONFIG_COMMON.local

@@ -1,101 +1,55 @@
 #
 #
-.PHONY: sd_config sd_install sd_status sd_start sd_stop sd_restart sd_clean sd_enable sd_disable
-#
-#
-sd_config:
-	$(QUIET)sed -e "s:_PYTHONPATH_:$(RS_INSTALL_LOCATION):g" \
-		    -e "s:_TWISDPATH_:$(TWISD_PATH):g" \
-		    -e "s:_CONFIGFILE_:$(RS_CFG_FILE):g" \
-		    -e "s:_USERID_:$(RS_USERID):g"  \
-		    -e "s:_GROUPID_:$(GROUPID):g"  \
-		    < $(RS_SITE_TEMPLATE_PATH)/rs.service.in > $(RS_SITE_TEMPLATE_PATH)/$(RS_SYSTEMD_FILENAME)
-#
-#	
-sd_install: sd_config
-	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(RS_SITE_TEMPLATE_PATH)/$(RS_SYSTEMD_FILENAME) $(SYSTEMD_PATH)/
-	$(QUIET)$(SUDO) systemctl daemon-reload
-#
-#	
-sd_status:
-	$(QUIET) systemctl status -l $(RS_SYSTEMD_FILENAME) | cat -b
-#
-#
-sd_start:
-	$(QUIET)$(SUDO) systemctl start $(RS_SYSTEMD_FILENAME)
-#
-# We ignore its error
-sd_stop:
-	-$(QUIET)$(SUDO) systemctl stop $(RS_SYSTEMD_FILENAME)
-#
-#
-sd_restart:
-	$(QUIET)$(SUDO) systemctl restart $(RS_SYSTEMD_FILENAME)
-#
-# We ignore its error
-sd_clean:
-	-$(QUIET)$(SUDO) systemctl disable $(RS_SYSTEMD_FILENAME)
-	-$(QUIET)$(SUDO) rm -f $(SYSTEMD_PATH)/$(RS_SYSTEMD_FILENAME)
-#
-#
-sd_enable:
-	$(if $(wildcard $(SYSTEMD_PATH)/$(RS_SYSTEMD_FILENAME)), $(SUDO) systemctl enable $(RS_SYSTEMD_FILENAME))
-#
-#
-sd_disable:
-	$(if $(wildcard $(SYSTEMD_PATH)/$(RS_SYSTEMD_FILENAME)), $(SUDO) systemctl disable $(RS_SYSTEMD_FILENAME))
-#
-#
-.PHONY:  src_install src_preinst src_versions src_postrm install uninstall restart
+.PHONY: rs_status rs_start rs_stop rs_restart rs_install rs_uninstall rs_preinst rs_postrm src_install src_uninstall install uninstall restart
 
-src_install: src_preinst
-	$(QUIET)$(SUDO) $(INSTALL) --owner=$(RS_USERID) --group=$(GROUPID) -d $(RS_INSTALL_LOCATION)
-	$(QUIET)$(SUDO) cp -r $(RS_SRC_PATH)/server/recceiver/    $(RS_INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) cp -r $(RS_SRC_PATH)/server/twisted/      $(RS_INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) cp -r $(PY_CF_SRC_PATH)/channelfinder/    $(RS_INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) $(INSTALL) -m 400 -b $(RS_SITE_TEMPLATE_PATH)/$(RS_CFG_FILE)          $(RS_INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) $(INSTALL) -m 400 -b $(RS_SITE_TEMPLATE_PATH)/channelfinderapi.conf   $(RS_INSTALL_LOCATION)/
-	$(QUIET)$(SUDO) $(INSTALL) -m 755 -b $(RS_SITE_TEMPLATE_PATH)/dropin.cache            $(RS_INSTALL_LOCATION)/twisted/plugins/
-	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(RS_SITE_TEMPLATE_PATH)/.versions                 $(RS_INSTALL_LOCATION)/
-	$(QUIET)$(SUDO)	chown -R $(RS_USERID):$(GROUPID) $(RS_INSTALL_LOCATION)
-	$(QUIET) rm -f $(RS_SITE_TEMPLATE_PATH)/.versions
+rs_status: sd_status
 
-src_preinst: src_versions
-	$(QUIET)$(SUDO) bash $(RS_SITE_TEMPLATE_PATH)/recceiver.postinst "configure" "$(RS_USERID)" "$(GROUPID)"
-	$(QUIET)sed -e "s:@CF_PROPERTIES@:$(CF_PROPERTIES):g" \
-		    -e "s/@RS_ADDR_LIST@/$(RS_ADDR_LIST)/g" \
-		    < $(RS_SITE_TEMPLATE_PATH)/$(RS_CFG_FILE_IN) > $(RS_SITE_TEMPLATE_PATH)/$(RS_CFG_FILE)
-	$(QUIET)sed -e "s|@CF_FULL_URL@|$(CF_FULL_URL)|g" \
-		    -e "s:@CF_USER@:$(CF_USER):g" \
-		    -e "s:@CF_PASSWD@:$(CF_PASSWD):g" \
-		    < $(RS_SITE_TEMPLATE_PATH)/channelfinderapi.conf.in > $(RS_SITE_TEMPLATE_PATH)/channelfinderapi.conf
-	
+rs_start: sd_start
 
-src_versions:
-	$(QUIET)echo "Timestamps : $$(date +%Y%m%d-%H%M%S)/YYYYMMDD-HHMMSS" > $(RS_SITE_TEMPLATE_PATH)/.versions
-	$(QUIET)echo "- SRC1 URL : $(RS_SRC_GITURL)"     >> $(RS_SITE_TEMPLATE_PATH)/.versions
-	$(QUIET)echo "- SRC1 VER : $(RS_SRC_TAG)"        >> $(RS_SITE_TEMPLATE_PATH)/.versions
-	$(QUIET)echo "- SRC2 URL : $(PY_CF_SRC_GITURL)"  >> $(RS_SITE_TEMPLATE_PATH)/.versions
-	$(QUIET)echo "- SRC2 VER : $(PY_CF_SRC_TAG)"     >> $(RS_SITE_TEMPLATE_PATH)/.versions	
+rs_stop: sd_stop
 
-src_postrm:
-	$(QUIET)$(SUDO) bash  $(RS_SITE_TEMPLATE_PATH)/recceiver.postrm "purge" "$(RS_USERID)"
+rs_restart: sd_restart
+
+# Pure source file installation, USRID/GROUPID must be defined
+rs_install: conf
+	$(QUIET)$(SUDO) $(INSTALL) -d $(RS_INSTALL_LOCATION) -o $(RS_USERID) -g $(RS_GROUPID)
+	$(QUIET)$(SUDO) cp -r $(RS_SRC_PATH)/server/recceiver    $(RS_INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) cp -r $(RS_SRC_PATH)/server/twisted      $(RS_INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) cp -r $(PY_CF_SRC_PATH)/channelfinder    $(RS_INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) $(INSTALL) -m 400 -b $(RS_SITE_TEMPLATE_PATH)/$(RECSYNC_CONF)   $(RS_INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) $(INSTALL) -m 400 -b $(RS_SITE_TEMPLATE_PATH)/$(CFAPI_CONF)     $(RS_INSTALL_LOCATION)/
+	$(QUIET)$(SUDO) $(INSTALL) -m 755 -b $(RS_SITE_TEMPLATE_PATH)/dropin.cache      $(RS_INSTALL_LOCATION)/twisted/plugins/
+	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(RS_SITE_TEMPLATE_PATH)/.versions           $(RS_INSTALL_LOCATION)/
+	$(QUIET)$(SUDO)	chown -R $(RS_USERID):$(RS_GROUPID) $(RS_INSTALL_LOCATION)
+
+
+rs_uninstall:
+	$(QUIET)$(SUDO) rm -rf $(RS_INSTALL_LOCATION)
+
+# Linux Default USERID/GROUPID configure first, and call rs_install
+src_install: rs_preinst rs_install
+
+src_uninstall: rs_uninstall rs_postrm
+
+rs_preinst:
+	$(QUIET)$(SUDO) bash $(RS_SITE_TEMPLATE_PATH)/recceiver.postinst "configure" "$(RS_USERID)" "$(RS_GROUPID)"
+
+rs_postrm: 
+	$(QUIET)$(SUDO) bash $(RS_SITE_TEMPLATE_PATH)/recceiver.postrm "purge" "$(RS_USERID)"
 	
 ## Install recsync : add user/group, install all, setup and enable service
-install: src_install sd_install sd_enable
+install: rs_preinst rs_install sd_install sd_enable
 	$(QUIET)echo "----- Note that one should start it and check its status via "
 	$(QUIET)echo "----- sudo systemctl start  $(RS_SYSTEMD_FILENAME) or make sd_start"
 	$(QUIET)echo "----- systemctl status $(RS_SYSTEMD_FILENAME) or make sd_status"
 
 
 ## Uninstall RecSync : remove user/group, stop, clean service, remove all
-uninstall: sd_stop sd_disable sd_clean src_postrm
+uninstall: sd_stop sd_disable sd_clean rs_postrm
 	$(QUIET)$(SUDO) rm -rf $(RS_INSTALL_LOCATION)
 
 
-reinstall: install
+reinstall: conf install
 ## Restart all from scratch. 
-restart: uninstall reinstall sd_start sd_status
-	$(QUIET)echo "----- Note that one should start it again and check its status via "
-	$(QUIET)echo "----- sudo systemctl start  $(RS_SYSTEMD_FILENAME) or make sd_start"
-	$(QUIET)echo "----- systemctl status $(RS_SYSTEMD_FILENAME) or make sd_status"
+restart: uninstall reinstall rs_start rs_status
+

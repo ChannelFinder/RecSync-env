@@ -1,7 +1,7 @@
 [recceiver]
 
 # Logging detail level.  Use python logging level name.
-loglevel = WARN
+loglevel = @RS_CFG_LOGLEVEL@
 
 # list of broadcast address:port with comma ',' seperated.
 # a broadcast address in the same subnet where RecCeiver runs : 127.255.255.255
@@ -21,31 +21,40 @@ addrList = @RS_ADDR_LIST@
 # Default uses wildcard address and a random port.
 # 45722 is the randomly selected port
 # 
-bind = 0.0.0.0:45722
+bind = @RS_BIND_ADDR@
 
 # Processing chain
-procs = cf
+procs = @RS_PROCS_CHAIN@
 
 # Time interval for sending recceiver advertisments
-# announceInterval = 15.0
+announceInterval = @RS_ANNOUNCE_INTERVAL@
 
 # Idle Timeout for TCP connections.
-# tcptimeout = 15.0
+tcptimeout = @RS_TCPTIMEOUT@
 
 # Time to wait before commiting updates
 # Doesn't effect IOC clients
-# commitInterval = 5.0
+commitInterval = @RS_COMMIT_INTERVAL@
 
 # Maximum concurrent "active" clients
 # to allow.
-#maxActive = 20
+maxActive = @RS_MAXACTIVE@
 
 # The channelFinder client is configuration information is 
 # stored in channelfinderapi.conf as described in the client
 
 [cf]
 # a space-separated list of infotags to set as CF Properties
-infotags = @CF_PROPERTIES@
-alias = on
-
+infotags = @RS_CONF_INFOTAGS@
+# List environment variables that should be written as channel finder properties
+#
+# Comma-separated list of VARIABLE:PropertyName,
+# specifying which environment VARIABLEs to pass on to the channel finder
+# and defining the corresponding PropertyName
+# environment_vars=ENGINEER:Engineer,EPICS_BASE:EpicsVersion,PWD:WorkingDirectory
+# Turn on optional alias and recordType properties
+environment_vars=@RS_CONF_ENV_VARS@
+alias = @RS_CONF_ALIAS@
+recordType = @RS_CONF_RECORDTYPE@
+recordDesc = @RS_CONF_RECORDDESC@
 # EOF

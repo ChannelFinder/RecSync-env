@@ -24,7 +24,6 @@ INIT_SRC2 = 1
 endif
 #
 #
-RS_SITE_TEMPLATE_PATH:=$(TOP)/site-template
 RS_SYSTEMD_FILENAME:=recsync.service
 #
 #
@@ -34,3 +33,9 @@ VARS_EXCLUDES+=INSTALL_PROGRAM
 VARS_EXCLUDES+=INSTALL_DATA
 #
 #
+
+# These allow developers to override the CONFIG_SRC variable
+# settings without having to modify the configure/CONFIG_SRC
+# file itself.
+-include $(TOP)/../CONFIG_SRC.local
+-include $(TOP)/configure/CONFIG_SRC.local

@@ -1,0 +1,18 @@
+.PHONY: conf.macos conf.macbrew
+
+
+conf.macos: conf.macbrew
+conf.macos.show: conf.macbrew
+
+
+conf.macbrew:
+	$(QUIET)echo ">>> Generating $(TOP)/configure/CONFIG_SITE.local"
+	$(QUIET)echo "TWISTD_PATH=/opt/homebrew/bin"              > $(TOP)/configure/CONFIG_SITE.local
+	$(QUIET)echo "RS_INSTALL_LOCATION:=$(TOP)/recsync.local" >> $(TOP)/configure/CONFIG_SITE.local
+	$(QUIET)echo "RS_USERID:=${USER}"                        >> $(TOP)/configure/CONFIG_SITE.local
+	$(QUIET)echo "RS_GROUPID:=admin"                         >> $(TOP)/configure/CONFIG_SITE.local
+	$(QUIET)cat -b $(TOP)/configure/CONFIG_SITE.local
+
+conf.macbrew.show:
+	cat -b $(TOP)/configure/CONFIG_SITE.local
+

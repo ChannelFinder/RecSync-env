@@ -1,0 +1,66 @@
+
+properties_RULES_NAMES:=recsync cfapi versions
+conf_properties_RULES:=$(addprefix conf., $(properties_RULES_NAMES))
+show_properties_RULES:=$(addsuffix .show, $(conf_properties_RULES))
+
+RULES_VARS+=conf.rsproperties conf.rsproperties.show
+
+.PHONY: conf conf.rsproperties conf.localconf
+
+conf: conf.rsproperties conf.versions
+
+conf.show: conf.rsproperties.show conf.versions.show
+
+conf.local: conf.localconf conf
+
+conf.localconf:
+	$(QUIET)echo "RS_INSTALL_LOCATION:=$(TOP)/recsync.local"  > $(TOP)/configure/CONFIG_SITE.local
+	$(QUIET)echo "RS_USERID:=${USER}"                        >> $(TOP)/configure/CONFIG_SITE.local
+	$(QUIET)echo "RS_GROUPID:=1000"                          >> $(TOP)/configure/CONFIG_SITE.local
+
+conf.local.show: conf.show
+	cat -b $(TOP)/configure/CONFIG_SITE.local
+
+conf.rsproperties: $(conf_properties_RULES)
+
+conf.rsproperties.show: $(show_properties_RULES)
+
+conf.recsync: $(RECSYNC_CONF).in
+	$(QUIET)echo ">>> Generate $(basename $<) from $<"
+	$(QUIET)sed -e "s|@RS_CFG_LOGLEVEL@|$(RS_CFG_LOGLEVEL)|g" \
+		        -e "s|@RS_ADDR_LIST@|$(RS_ADDR_LIST)|g" \
+		        -e "s|@RS_BIND_ADDR@|$(RS_BIND_ADDR)|g" \
+		        -e "s|@RS_PROCS_CHAIN@|$(RS_PROCS_CHAIN)|g" \
+		        -e "s|@RS_ANNOUNCE_INTERVAL@|$(RS_ANNOUNCE_INTERVAL)|g" \
+		        -e "s|@RS_TCPTIMEOUT@|$(RS_TCPTIMEOUT)|g" \
+		        -e "s|@RS_COMMIT_INTERVAL@|$(RS_COMMIT_INTERVAL)|g" \
+		        -e "s|@RS_MAXACTIVE@|$(RS_MAXACTIVE)|g" \
+		        -e "s|@RS_CONF_INFOTAGS@|$(RS_CONF_INFOTAGS)|g" \
+		        -e "s|@RS_CONF_ENV_VARS@|$(RS_CONF_ENV_VARS)|g" \
+		        -e "s|@RS_CONF_ALIAS@|$(RS_CONF_ALIAS)|g" \
+		        -e "s|@RS_CONF_RECORDTYPE@|$(RS_CONF_RECORDTYPE)|g" \
+		        -e "s|@RS_CONF_RECORDDESC@|$(RS_CONF_RECORDDESC)|g" \
+		        < $< > $(basename $<)
+
+conf.recsync.show: $(RECSYNC_CONF).in
+	cat -b $(basename $<)
+
+conf.cfapi: $(CFAPI_CONF).in
+	$(QUIET)echo ">>> Generate $(basename $<) from $<"
+	$(QUIET)sed -e "s|@CF_FULL_URL@|$(CF_FULL_URL)|g" \
+		        -e "s|@CF_USER@|$(CF_USER)|g" \
+		        -e "s|@CF_PASSWD@|$(CF_PASSWD)|g" \
+		        < $< > $(basename $<)
+
+conf.cfapi.show: $(CFAPI_CONF).in
+	cat -b $(basename $<)
+
+conf.versions:
+	$(QUIET)echo "Timestamps : $$(date +%Y%m%d-%H%M%S)/YYYYMMDD-HHMMSS" > $(RS_SITE_TEMPLATE_PATH)/.versions
+	$(QUIET)echo "- SRC1 URL : $(RS_SRC_GITURL)"     >> $(RS_SITE_TEMPLATE_PATH)/.versions
+	$(QUIET)echo "- SRC1 VER : $(RS_SRC_TAG)"        >> $(RS_SITE_TEMPLATE_PATH)/.versions
+	$(QUIET)echo "- SRC2 URL : $(PY_CF_SRC_GITURL)"  >> $(RS_SITE_TEMPLATE_PATH)/.versions
+	$(QUIET)echo "- SRC2 VER : $(PY_CF_SRC_TAG)"     >> $(RS_SITE_TEMPLATE_PATH)/.versions	
+
+conf.versions.show:
+	cat -b $(RS_SITE_TEMPLATE_PATH)/.versions

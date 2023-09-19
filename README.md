@@ -1,114 +1,76 @@
 # RecSync-env
-
-![RecSync-env installation test](https://github.com/ChannelFinder/RecSync-env/workflows/RecSync-env%20installation%20test/badge.svg)
-![Docker Image CI](https://github.com/ChannelFinder/RecSync-env/workflows/Docker%20Image%20CI/badge.svg)
-![Linter Run](https://github.com/ChannelFinder/RecSync-env/workflows/Linter%20Run/badge.svg)
+[![Debian 11](https://github.com/jeonghanlee/RecSync-env/actions/workflows/debian11.yml/badge.svg)](https://github.com/jeonghanlee/RecSync-env/actions/workflows/debian11.yml)
+[![Ubuntu latest](https://github.com/jeonghanlee/RecSync-env/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/jeonghanlee/RecSync-env/actions/workflows/ubuntu.yml)
+[![Rocky8](https://github.com/jeonghanlee/RecSync-env/actions/workflows/rocky8.yml/badge.svg)](https://github.com/jeonghanlee/RecSync-env/actions/workflows/rocky8.yml)
+[![Linter Run](https://github.com/jeonghanlee/RecSync-env/actions/workflows/linter.yml/badge.svg)](https://github.com/jeonghanlee/RecSync-env/actions/workflows/linter.yml)
+[![Docker](https://github.com/jeonghanlee/RecSync-env/actions/workflows/docker.yml/badge.svg)](https://github.com/jeonghanlee/RecSync-env/actions/workflows/docker.yml)
 
 Configuration Environment for the recsync server (aka. RecCeiver) at <https://github.com/ChannelFinder/recsync/tree/master/server>
 
-## Role
+## Pre-required Packages
 
-In order to download, install, setup all relevant components, one should do many steps manually. This repository was designed for the easy-to-reproducible environment for recsync server (aka RecCeiver).
-
-## Requirements
-
-* ChannelFinder : Please check it <https://github.com/ChannelFinder/ChannelFinder-env>
-* systemd service : this repository has its own systemd configuration.
-* `SUDO` permission
-* Few system packages : Please see below. We **will** use the system default python packages and system package manager (e.g., apt for Debian) instead of `conda`, `pip`, or whatever python tools, because we would like to install `RecCeiver` in a specific local directory instead of any Python related paths. This approach gives users, who may not be familiar with many Python environments, to focus only `RecCeiver`. I am sure that users should learn million different and continuous evolving Python environments later if one would like to use it within them.  
-* pyCFClient : In order to integrate `RecCeiver` with ChannelFinder, pyCFClient Python application [1] or package is required. The repository [1] was already integrated into the current repository. Thus one doesn't need to care about it.
-
-### system packages
-
-Note that `sqlite3` may not be necessary if one would like to test it with ChannelFinder directly.
-
-* Debian 10
-
-```bash
-sudo apt install sqlite3 python-twisted python-requests python-simplejson python-urllib3
+```
+git make sudo tree 
 ```
 
-* CentOS 7
+## Debian 11
+
+We may need to tune the default python version as `python3`
 
 ```bash
-sudo yum install sqlite  python-twisted-web python-requests python2-simplejson python-urllib3
+make install.p3deb
 ```
 
-* CentOS 8
-
-```bash
-sudo dnf install sqlite python3-twisted python-requests-futures python3-simplejson python3-urllib3
-sudo update-alternatives --set python /usr/bin/python3
 ```
-
-* Fedora 31
-
-```bash
-sudo dnf install sqlite python3-twisted python-requests-futures python3-simplejson python3-urllib3
-```
-
-### Python
-
-* Debian 10
-
-```bash
-Python 2.7.16 (default, Oct 10 2019, 22:02:15)
-[GCC 8.3.0] on linux2
-```
-
-* Fedora 31
-
-```bash
-$ python
-Python 3.8.2 (default, Feb 28 2020, 00:00:00)
-[GCC 10.0.1 20200216 (Red Hat 10.0.1-0.8)] on linux
-```
-
-## Few Makefile Rules
-
-### `make`
-
-* Print out selected rules with a little explanation
-
-### `make init`
-
-* Download recsync [2] and pyCFClient [1]
-* Switch to specific versions defined as `$(SRC1_TAG)` for recsync and `$(SRC2_TAG)` for pyCFClinet in `configure/RELEASE`
-
-### `make install`
-
-* `sudo` permission is required.
-* Add a user `recceiver` and a group id `65534` into a host system. Note that `nogroup` is valid only for Debian.
-* Copy all files in `recsync/server` and `pyCFClient` into defined a local installation path `INSTALL_LOCATION` in `configure/RELEASE`
-* Setup and enable systemd service
-
-### `make distclean`
-
-* Remove the downloaded recsync [2] and pyCFClient [1] source files.
-
-### `make vars`
-
-* Print out interesting variables
-* One can use `make PRINT.VARIABLE_NAME` to print out them. For example,  `make PRINT.INSTALL_LOCATION`.
-
-## A typical example to configure the ChannelFinder service
-
-Note that this example has the assumption which ES service is running.
-
-```bash
 make init
+make conf
+make conf.show
 make install
-sudo systemctl start recsync.service
-systemctl status recsync.service
+make sd_start
+make sd_status
 ```
 
-## Customize site-specific configuration
 
-Please consult two files in `configure` path, such as `RELEASE` and `CONFIG_SITE`. There are few comments on there. If you are familiar with the standard EPICS building system [3], it should be easy to understand them, because we mimic that concept into this repository.
+```
+make init
+make local.conf
+make local.conf.show
+make local.install
+make exist
+make local.run
+make local.stop
+make local.status
+```
+
+## macOS
+
+We only support macOS for testing and developing purposes, so we don't have launchd configuration. We localize the recsync service within a local folder, and define several simple Makefile rules to maintain them.
+To use the following rules, one need to setup `homebrew` first. 
+
+* Install Python3 and its required packages through `pip3`
+
+```bash
+make install.p3mac
+```
+
+* Installation and running procedures
+
+```
+make init
+make conf
+make conf.show
+make local.install
+make exist
+make local.run
+make local.stop
+```
+
+The log file will be located in `RS_INSTALL_LOCATION`, e.g., `$(TOP)/recsync.local` folder, which can be checked through `make local.status`. And one can remove all local directory through `make local.rm`
 
 ## Docker Image
 
-See [docs/Docker.md](docs/Docker.md) :whale:
+* The Docker image is hosted at https://hub.docker.com/orgs/alscontrols. 
+* See [docs/Docker.md](docs/Docker.md) :whale:
 
 ## While evaluating its configuration
 
@@ -119,12 +81,6 @@ make restart
 sudo systemctl start recsync.service
 systemctl status recsync.service
 ```
-
-## Notice
-
-* If one installs this at the first time, or reinstall from scratch, for example, `make restart`, one has to start its systemd service one more time, because of the issue mentioned in <https://github.com/ChannelFinder/recsync/issues/37>.
-
-* There are two important configuration files, which are configured carefully. One is `site-template/recsync.conf.in` and the other is `site-template/channelfinderapi.conf`. Especially, one should use the same and correct information in `channelfinderapi.conf` in order to match with its ChannelFinder configuration. For example, user name and its password should be matched with <https://github.com/ChannelFinder/ChannelFinder-env/blob/master/site-template/cf4als.ldif>.
 
 ## Reference
 
