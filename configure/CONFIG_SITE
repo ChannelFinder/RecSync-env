@@ -60,6 +60,10 @@ RS_SITE_TEMPLATE_PATH=$(TOP)/site-template
 # Each service need one space between them, and backslash must be double backslash
 RS_SYSTEMD_SERVICES:=channelfinder.service
 
+# If you want to run this as a user level systemd service
+# You can set this to: --user
+RS_SYSTEMD_USER:=
+
 # These allow developers to override the CONFIG_SITE variable
 # settings without having to modify the configure/CONFIG_SITE
 # file itself.
